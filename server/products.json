@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "code": "BP001",
+        "title": "Modelo #001",
+        "description": "Este modelo incluye",
+        "price": 350,
+        "thumbnail": "https://cdn.leonardo.ai/users/e1b24da5-638b-4c50-af03-b67f07688e68/generations/9654fe8b-faaa-4a00-aaf5-adec3c1c9300/Leonardo_Creative_Closeup_shot_of_a_luxurious_yacht_available_1.jpg",
+        "stock": 4
+    },
+    {
+        "id": 2,
+        "code": "BP002",
+        "title": "Modelo #002",
+        "description": "Este modelo incluye",
+        "price": 400,
+        "thumbnail": "https://cdn.leonardo.ai/users/e1b24da5-638b-4c50-af03-b67f07688e68/generations/9654fe8b-faaa-4a00-aaf5-adec3c1c9300/Leonardo_Creative_Closeup_shot_of_a_luxurious_yacht_available_0.jpg",
+        "stock": 2
+    },
+    {
+        "id": 3,
+        "code": "BP003",
+        "title": "Modelo #003",
+        "description": "Este modelo incluye",
+        "price": 625,
+        "thumbnail": "https://cdn.leonardo.ai/users/e1b24da5-638b-4c50-af03-b67f07688e68/generations/e2b8c423-d30f-49fc-85d8-7dca71685dce/Leonardo_Creative_Closeup_shot_of_a_sleek_luxurious_yacht_avai_1.jpg",
+        "stock": 1
+    },
+    {
+        "id": 4,
+        "code": "BP004",
+        "title": "Modelo #004",
+        "description": "Este modelo incluye",
+        "price": 475,
+        "thumbnail": "https://cdn.leonardo.ai/users/e1b24da5-638b-4c50-af03-b67f07688e68/generations/4081545d-d10e-431e-9492-728e342a1ccb/Leonardo_Creative_Closeup_of_a_sleek_luxurious_yacht_available_1.jpg",
+        "stock": 0
+    },
+    {
+        "id": 5,
+        "code": "BP005",
+        "title": "Modelo #005",
+        "description": "Este modelo incluye",
+        "price": 950,
+        "thumbnail": "https://cdn.leonardo.ai/users/e1b24da5-638b-4c50-af03-b67f07688e68/generations/4081545d-d10e-431e-9492-728e342a1ccb/Leonardo_Creative_Closeup_of_a_sleek_luxurious_yacht_available_0.jpg",
+        "stock": 1
+    }
+]
