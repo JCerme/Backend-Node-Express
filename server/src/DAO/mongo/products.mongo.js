@@ -1,3 +1,4 @@
+import CustomError from "../../services/errors/custom_error.js";
 import productsModel from "./models/products.model.js";
 
 export default class Product {
@@ -7,7 +8,11 @@ export default class Product {
             const products = await productsModel.find(filter).limit(limit).skip((limit * page) - limit).sort({"price": sort || 1}).lean();
             return products;
         } catch(err) {
-            throw new Error(err);
+            CustomError.createError(
+                ERR_DICT.PRODUCT,
+                'Error getting products',
+                err
+            );
         }
     }
     getProductByID = async (pid) => await productsModel.find({"_id": pid}).lean();

@@ -1,3 +1,5 @@
+import CustomError from '../../services/errors/custom_error.js';
+import ERR_DICT from '../../services/errors/enums.js';
 import OrderDTO from '../DTO/order.dto.js';
 import cartsModel from './models/carts.model.js';
 import orderModel from './models/orders.model.js';
@@ -14,7 +16,11 @@ export default class Order {
     createOrder = async (order) => {
         try {
             const cart = await cartsModel.findById(order.purchaser.cart);
-            if (!cart) return { status: 404, message: 'Cart not found' };
+            !cart && CustomError.createError(
+                ERR_DICT.CART,
+                'Cart not found',
+                `Cart with id ${order.purchaser.cart} not found`
+            );
 
             order.products = []
             for(let prod of cart.products){
@@ -71,8 +77,11 @@ export default class Order {
             );
             return { status: 201, message: 'Order created', order: newOrder };
         } catch (error) {
-            console.error(error);
-            return { status: 500, message: 'Server error' };
+            CustomError.createError(
+                ERR_DICT.ORDER,
+                'Error creating order',
+                error
+            );
         }
     }
 

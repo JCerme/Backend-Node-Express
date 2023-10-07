@@ -43,6 +43,8 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+import { errors_handler } from './helpers/errors_handler.js';
+app.use(errors_handler);
 app.use('/static', express.static(__dirname + '/public'));
 const PORT = process.env.PORT || 8080;
 export const httpServer = app.listen(

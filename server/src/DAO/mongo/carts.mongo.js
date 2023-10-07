@@ -1,3 +1,5 @@
+import CustomError from "../../services/errors/custom_error.js";
+import ERR_DICT from "../../services/errors/enums.js";
 import cartsModel from "./models/carts.model.js"
 import productsModel from "./models/products.model.js"
 
@@ -11,9 +13,16 @@ export default class Cart {
             const product = await productsModel.findOne({ "_id": pid }).lean();
             const cart = await cartsModel.findOne({ "_id": cid }).lean();
 
-            if (!product || !cart) {
-                throw new Error('Product or Cart not found');
-            }
+            !product && CustomError.createError(
+                ERR_DICT.PRODUCT,
+                'Product not found',
+                `Product with id ${pid} not found`
+            );
+            !cart && CustomError.createError(
+                ERR_DICT.CART,
+                'Cart not found',
+                `Cart with id ${cid} not found`
+            );
 
             const cartProduct = cart.products.find(
                 p => p.product.toString() === product._id.toString()
@@ -32,7 +41,11 @@ export default class Cart {
                 );
             }
         } catch (err) {
-            throw new Error(err);
+            CustomError.createError(
+                ERR_DICT.CART,
+                'Error adding product to cart',
+                err
+            );
         }
     }
 
