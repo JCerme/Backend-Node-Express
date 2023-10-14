@@ -1,15 +1,13 @@
 To execute:
 --
 ```bash
-cd ./BoatPump
+cd ./BoatPump/frontend/
 npm install
-```
-```bash
-cd ./frontend
 npm run dev
+cd ..
 ```
-
 ```bash
-cd ./backend
+cd ./server/
+npm install
 npm run dev
 ```
