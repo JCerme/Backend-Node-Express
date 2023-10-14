@@ -15,12 +15,17 @@ export default class Order {
 
     createOrder = async (order) => {
         try {
-            const cart = await cartsModel.findById(order.purchaser.cart);
-            !cart && CustomError.createError(
-                ERR_DICT.CART,
-                'Cart not found',
-                `Cart with id ${order.purchaser.cart} not found`
-            );
+            !order && CustomError.createError(ERR_DICT.ORDER, 'Order not found');
+            !order.purchaser && CustomError.createError(ERR_DICT.ORDER, 'Unauthorized');
+
+            const cart = await cartsModel.findById(order?.purchaser?.cart);
+            if(!cart) {
+                CustomError.createError(
+                    ERR_DICT.CART,
+                    'Cart not found',
+                    `Cart with id ${order?.purchaser?.cart} not found`
+                );
+            }
 
             order.products = []
             for(let prod of cart.products){

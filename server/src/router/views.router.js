@@ -49,6 +49,6 @@ router.get("/account", authentication, (req, res) => {
 });
 
 // Chat
-router.get('/chat', authentication, getMessages);
+router.get('/chat', getMessages);
 
 export default router;

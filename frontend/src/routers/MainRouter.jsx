@@ -13,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Register } from '../components/Login/Register'
 import { Checkout } from '../components/Checkout/Checkout'
 import { Mocking } from '../components/Mocking/Mocking'
+import { Chat } from '../components/Chat/Chat'
 
 export const MainRouter = () => {
     return (
@@ -28,6 +29,7 @@ export const MainRouter = () => {
                     <Route path="/logout" element={<Logout/>}/>
                     <Route path="/register" element={<Register/>}/>
                     <Route path="/checkout" element={<PrivateRoute><Checkout/></PrivateRoute>}/>
+                    <Route path="/chat" element={<PrivateRoute><Chat/></PrivateRoute>}/>
                     <Route path="/mockingproducts" element={<Mocking/>}></Route>
                     <Route path="*">"404 Not Found"</Route>
                 </Routes>

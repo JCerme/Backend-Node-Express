@@ -18,6 +18,30 @@ COPY . .
 EXPOSE 8080
 CMD ["npm", "run", "dev"]
 
-# docker build -t example .
-# docker image
-# docker run -p 8080:8080 example
+
+# Build the image
+# docker build -t boatpump .
+# ----------
+# See the images
+# docker images
+# ----------
+# Make the container
+# docker run -d -p 8080:8080 boatpump
+# ----------
+# See the containers
+# docker ps (-a para all)
+# ----------
+# Login
+# docker login
+# ----------
+# Tag the image
+# docker tag boatpump jcerme/boatpump:1.0.0
+# ----------
+# Push the image
+# docker push jcerme/boatpump:1.0.0
+# ----------
+# Pull the image
+# docker pull jcerme/boatpump:1.0.0
+# ----------
+# Run the image
+# docker run -d -p 8080:8080 jcerme/boatpump:1.0.0
