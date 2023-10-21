@@ -15,15 +15,26 @@ export default class Order {
 
     createOrder = async (order) => {
         try {
-            !order && CustomError.createError(ERR_DICT.ORDER, 'Order not found');
-            !order.purchaser && CustomError.createError(ERR_DICT.ORDER, 'Unauthorized');
+            !order && CustomError.createError(
+                ERR_DICT.ORDER,
+                'Order not found',
+                'Order data not found',
+                'User tried to create an order, but the order data was not found'
+            );
+            !order.purchaser && CustomError.createError(
+                ERR_DICT.ORDER,
+                'Unauthorized',
+                'User not logged in',
+                'User tried to create an order, but the user was not logged in'
+            );
 
             const cart = await cartsModel.findById(order?.purchaser?.cart);
             if(!cart) {
                 CustomError.createError(
                     ERR_DICT.CART,
                     'Cart not found',
-                    `Cart with id ${order?.purchaser?.cart} not found`
+                    `Cart with id ${order?.purchaser?.cart} not found`,
+                    'User tried to create an order, but the cart was not found'
                 );
             }
 
@@ -85,7 +96,8 @@ export default class Order {
             CustomError.createError(
                 ERR_DICT.ORDER,
                 'Error creating order',
-                error
+                error,
+                'User tried to create an order, but an error occurred'
             );
         }
     }

@@ -11,6 +11,7 @@ const ERR_DICT = {
     PRODUCT_CATEGORY: 10,
     INVALID_TYPE: 11,
     DATABASE: 12,
+    UNKNOWN_ERROR: 99,
 }
 
 export default ERR_DICT

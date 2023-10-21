@@ -16,12 +16,11 @@ socket.on('productRemovedFromCart', (data) => {
     if(elementToRemove) {
         elementToRemove.parentElement.parentElement.parentElement.remove();
     } else {
-        console.error("Element not found!");
+        console.log("Element not found!");
     }
 })
 
 document.querySelectorAll('#units span[data-stock]').forEach((elem) => elem.addEventListener('click', (e) => {
     e.stopPropagation();
     e.preventDefault();
-    console.log(e.currentTarget.dataset.stock);
 }))

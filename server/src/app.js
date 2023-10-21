@@ -1,6 +1,7 @@
 // Express
 import express from 'express';
 // Modules
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
@@ -10,6 +11,7 @@ import compression from 'express-compression';
 // Utils
 import __dirname from '../utils.js';
 import initializePassport from './config/passport.config.js';
+import { logger } from './helpers/logger.js';
 
 // App Init
 const app = express();
@@ -43,18 +45,20 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-import { errors_handler } from './middlewares/errors_handler.js';
-app.use(errors_handler);
 app.use('/static', express.static(__dirname + '/public'));
 const PORT = process.env.PORT || 8080;
 export const httpServer = app.listen(
-    PORT, () => console.log('Server running on port ' + PORT)
+    PORT, () => logger.debug('Server running on port ' + PORT)
 );
 
 // Passport config
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Loggers
+import { addLogger } from './middlewares/loggers.js';
+app.use(addLogger);
 
 // Router
 import viewsRouter from './router/views.router.js';
@@ -63,13 +67,18 @@ import cartsRouter from './router/carts.router.js';
 import authRouter from './router/auth.router.js'
 import sessionsRouter from './router/sessions.router.js';
 import orderRoute from './router/order.router.js';
-import bodyParser from 'body-parser';
+import loggerRouter from './router/logger.router.js';
 app.use('/api/', viewsRouter);
 app.use('/api/products', prodRouter);
 app.use('/api/cart', cartsRouter);
 app.use('/api/', sessionsRouter);
 app.use('/auth', authRouter);
 app.use('/api/checkout', orderRoute);
+app.use('/api/', loggerRouter);
+
+// Errors handler
+import { errors_handler } from './middlewares/errors_handler.js';
+app.use(errors_handler);
 
 // WebSocket config
 import http from 'http';
@@ -95,10 +104,10 @@ io.use(sharedsession(expressSession, {
     autoSave: true
 }));
 
-server.listen(8081, () => console.log('Socket.IO server running on port 8081'));
+server.listen(8081, () => logger.debug('Socket.IO server running on port 8081'));
 io.on('connection', (socket) => {
     // Listen to 'connection' event
-    socket.on('new', user => console.log(`${user} has connected`));
+    socket.on('new', user => logger.info(`${user} has connected`));
     // Listen to new messages
     socket.on('message', msg => {
         msg.createdAt = new Date();

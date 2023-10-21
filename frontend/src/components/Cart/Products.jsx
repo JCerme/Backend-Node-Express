@@ -13,7 +13,7 @@ export const Product = ({ products, setCart, setSummaryLoader }) => {
         })
         .then(response => response.json())
         .then(data => data.status === 'success') && window.location.reload()
-        .catch(err => console.log(err))
+        .catch(err => logger(err))
     }
 
     return (

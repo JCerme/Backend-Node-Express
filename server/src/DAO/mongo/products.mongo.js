@@ -11,7 +11,8 @@ export default class Product {
             CustomError.createError(
                 ERR_DICT.PRODUCT,
                 'Error getting products',
-                err
+                err,
+                'User tried to get products, but an error occurred'
             );
         }
     }

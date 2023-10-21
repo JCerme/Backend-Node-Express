@@ -15,7 +15,6 @@ const removeToast = (toast) => {
 }
 
 const createToast = (type, message) => {
-    console.log("createToast")
     const toast = document.createElement("li");
     toast.className = `toast ${type}`;
     toast.innerHTML = `<div class="column">${toastDetails[type]}<span>${message}</span></div>`;

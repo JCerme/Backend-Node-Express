@@ -39,7 +39,6 @@ export default class ProductManager {
             this.products.push(newProduct);
             await this.writeToFile();
         } catch (err) {
-            console.log(err);
             throw err;
         }
     }
@@ -60,7 +59,6 @@ export default class ProductManager {
             this.products = this.products.map(product => product.id === id ? { ...product, ...updatedProduct, id } : product);
             await this.writeToFile();
         } catch (err) {
-            console.log(err);
             throw err;
         }
     }
@@ -71,7 +69,6 @@ export default class ProductManager {
             this.products = this.products.filter(product => product.id !== id);
             await this.writeToFile();
         } catch (err) {
-            console.log(err);
             throw err;
         }
     }

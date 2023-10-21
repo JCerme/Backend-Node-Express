@@ -37,7 +37,6 @@ export default class CartsManager {
             this.carts.push(newCart);
             await this.writeToFile();
         } catch (err) {
-            console.log(err);
             throw err;
         }
     }
@@ -66,7 +65,6 @@ export default class CartsManager {
     
             await this.writeToFile();
         } catch (err) {
-            console.log(err);
             throw err;
         }
     }    
@@ -92,7 +90,6 @@ export default class CartsManager {
             this.carts = this.carts.filter(cart => cart.id !== id);
             await this.writeToFile();
         } catch (err) {
-            console.log(err);
             throw err;
         }
     }

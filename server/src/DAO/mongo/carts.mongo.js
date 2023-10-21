@@ -16,12 +16,14 @@ export default class Cart {
             !product && CustomError.createError(
                 ERR_DICT.PRODUCT,
                 'Product not found',
-                `Product with id ${pid} not found`
+                `Product with id ${pid} not found`,
+                'User tried to add a product to a cart, but the product was not found'
             );
             !cart && CustomError.createError(
                 ERR_DICT.CART,
                 'Cart not found',
-                `Cart with id ${cid} not found`
+                `Cart with id ${cid} not found`,
+                'User tried to add a product to a cart, but the cart was not found'
             );
 
             const cartProduct = cart.products.find(
@@ -44,7 +46,8 @@ export default class Cart {
             CustomError.createError(
                 ERR_DICT.CART,
                 'Error adding product to cart',
-                err
+                err,
+                'User tried to add a product to a cart, but an error occurred'
             );
         }
     }

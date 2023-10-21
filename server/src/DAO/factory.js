@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import { logger } from '../helpers/logger.js'
 
 dotenv.config();
 export let User
@@ -8,7 +9,7 @@ export let Cart
 export let Message
 export let Order
 
-console.log(`Persistence with ${process.env.PERSISTENCE}`)
+logger.debug(`Persistence with ${process.env.PERSISTENCE}`)
 
 switch (process.env.PERSISTENCE) {
     case 'mongodb':

@@ -5,6 +5,7 @@ import { createHash, isValidPassword } from "../../utils.js";
 import GitHubStrategy from 'passport-github2';
 import GoogleStrategy from 'passport-google-oauth2';
 import cartsModel from "../DAO/mongo/models/carts.model.js";
+import { logger } from "../helpers/logger.js";
 
 const LocalStrategy = local.Strategy;
 
@@ -31,8 +32,8 @@ const initializePassport = () => {
 
             const result = await usersModel.create(newUser)
             return done(null, result)
-        } catch(e) {
-            console.log(e)
+        } catch(error) {
+            logger.error(error);
             return done(null, false, { message: 'Error to login with github' + e })
         }
     }));
@@ -59,8 +60,8 @@ const initializePassport = () => {
             
             const result = await usersModel.create(newUser)
             return done(null, result)
-        } catch(e) {
-            console.log(e)
+        } catch(error) {
+            logger.error(error);
             return done(null, false, { message: 'Error to login with google' + e })
         }
     }));
