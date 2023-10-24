@@ -24,8 +24,8 @@ export const getUserById = async (req, res, next) => {
 
 export const getUserByEmail = async (req, res, next) => {
     try {
-        const { uemail } = req.params
-        const result = await userService.getUserByEmail(uemail)
+        const { to } = req.params
+        const result = await userService.getUserByEmail(to)
         res.send(await response('success', result, req.query))
     } catch (error) {
         req.logger.error(error);

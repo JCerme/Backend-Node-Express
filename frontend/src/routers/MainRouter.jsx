@@ -14,6 +14,8 @@ import { Register } from '../components/Login/Register'
 import { Checkout } from '../components/Checkout/Checkout'
 import { Mocking } from '../components/Mocking/Mocking'
 import { Chat } from '../components/Chat/Chat'
+import { ResetPassword } from '../components/ResetPassword/ResetPassword'
+import { NewPassword } from '../components/ResetPassword/NewPassword'
 
 export const MainRouter = () => {
     return (
@@ -31,6 +33,8 @@ export const MainRouter = () => {
                     <Route path="/checkout" element={<PrivateRoute><Checkout/></PrivateRoute>}/>
                     <Route path="/chat" element={<PrivateRoute><Chat/></PrivateRoute>}/>
                     <Route path="/mockingproducts" element={<Mocking/>}></Route>
+                    <Route path="/reset-password" element={<ResetPassword/>}></Route>
+                    <Route path="/reset-password/:uid/:code" element={<NewPassword/>}></Route>
                     <Route path="*">"404 Not Found"</Route>
                 </Routes>
             </LoginProvider>
