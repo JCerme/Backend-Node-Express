@@ -38,7 +38,7 @@ router.get(
 )
 router.get(
     '/githubcallback',
-    passport.authenticate('github', { failureRedirect: '/auth/error'}),
+    passport.authenticate('github', { failureRedirect: '/error'}),
     async(req, res) => {
         req.session.user = req.user
         return res.send(
@@ -61,7 +61,7 @@ router.get(
 );
 router.get(
     '/googlecallback',
-    passport.authenticate( 'google', { failureRedirect: '/auth/error' }),
+    passport.authenticate( 'google', { failureRedirect: '/api/auth/error' }),
     async(req, res) => {
         req.session.user = req.user
         return res.send(

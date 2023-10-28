@@ -9,8 +9,6 @@ import PublicUserDTO from '../DAO/DTO/publicUser.dto.js';
 // MAIN ROUTER
 router.get('/', getProducts);
 
-// Real time products
-router.get('/realtimeproducts', getProducts);
 // Products
 router.get('/products', getProducts);
 // Single product

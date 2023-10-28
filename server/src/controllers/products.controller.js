@@ -15,6 +15,7 @@ export const getProductByID = async (req, res, next) => {
     try {
         const { pid } = req.params
         const result = await productService.getProductByID(pid)
+        if (!result) return res.status(401).send('Product not found')
         res.send(await response('success', result, req.query))
     } catch (error) {
         req.logger.error(error);

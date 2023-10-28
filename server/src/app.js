@@ -10,14 +10,16 @@ import cookieParser from 'cookie-parser';
 import compression from 'express-compression';
 // Utils
 import __dirname from '../utils.js';
-import initializePassport from './config/passport.config.js';
+import initializePassport from './passport/passport.config.js';
 import { logger } from './helpers/logger.js';
+import swaggerDocs from './helpers/swagger.js';
 
 // App Init
 const app = express();
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.disable('x-powered-by');
 app.use(bodyParser.json());
 app.use(compression(
     //{brotli: { enabled:true, zlib: {}}} // Enable brotli compression
@@ -47,9 +49,10 @@ app.use(cors({
 
 app.use('/static', express.static(__dirname + '/public'));
 const PORT = process.env.PORT || 8080;
-export const httpServer = app.listen(
-    PORT, () => logger.debug('Server running on port ' + PORT)
-);
+export const httpServer = app.listen(PORT, () => {
+    logger.debug('Server running on port ' + PORT);
+    swaggerDocs(app, PORT)
+});
 
 // Passport config
 initializePassport();
@@ -69,14 +72,14 @@ import sessionsRouter from './router/sessions.router.js';
 import orderRoute from './router/order.router.js';
 import loggerRouter from './router/logger.router.js';
 import resetPwdRouter from './router/reset_pwd.router.js';
-app.use('/api/', viewsRouter);
+app.use('/api', viewsRouter);
 app.use('/api/products', prodRouter);
 app.use('/api/cart', cartsRouter);
-app.use('/api/', sessionsRouter);
-app.use('/auth', authRouter);
+app.use('/api/sessions', sessionsRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/checkout', orderRoute);
-app.use('/api/', loggerRouter);
-app.use('/api/', resetPwdRouter);
+app.use('/api/logger', loggerRouter);
+app.use('/api', resetPwdRouter);
 
 // Errors handler
 import { errors_handler } from './middlewares/errors_handler.js';

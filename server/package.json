@@ -32,7 +32,10 @@
     "passport-google-oauth2": "^0.2.0",
     "passport-local": "^1.0.0",
     "socket.io": "^4.7.1",
-    "uid": "^2.0.2"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "uid": "^2.0.2",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.3.3"

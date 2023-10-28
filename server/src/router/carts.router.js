@@ -8,14 +8,13 @@ import {
     updateProductUnits,
     deleteProductFromCart
 } from '../controllers/carts.controller.js';
-import { isUser } from '../helpers/admin.js';
 
 // CART
 router.post('/', addCart)
 router.put('/:cid', updateCart);
 router.delete('/:cid', clearCart);
-router.post('/product/:pid', isUser, addProductToCart);
-router.put('/product/:pid', isUser, updateProductUnits);
-router.delete('/product/:pid', isUser, deleteProductFromCart);
+router.post('/product/:pid', addProductToCart);
+router.put('/product/:pid', updateProductUnits);
+router.delete('/product/:pid', deleteProductFromCart);
 
 export default router;

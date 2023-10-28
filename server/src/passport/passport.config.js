@@ -15,7 +15,7 @@ const initializePassport = () => {
     passport.use('github', new GitHubStrategy({
         clientID: process.env.GITHUB_CID,
         clientSecret: process.env.GITHUB_SECRET,
-        callbackURL: `http://localhost:${PORT}/auth/githubcallback`
+        callbackURL: `http://localhost:${PORT}/api/auth/githubcallback`
     }, async (accessToken, refreshToken, profile, done) => {
         try  {
             const email = profile._json.email || profile.emails[0].value 
@@ -43,7 +43,7 @@ const initializePassport = () => {
     passport.use('google', new GoogleStrategy({
         clientID: process.env.GOOGLE_CID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: `http://localhost:${PORT}/auth/googlecallback`,
+        callbackURL: `http://localhost:${PORT}/api/auth/googlecallback`,
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const email = profile._json.email
@@ -125,7 +125,6 @@ const initializePassport = () => {
         const user = await usersModel.findById(id)
         done(null, user)
     })
-
 }
 
 export default initializePassport;

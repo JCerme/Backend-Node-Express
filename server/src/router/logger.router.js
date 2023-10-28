@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 
-router.get("/loggerTest", (req, res) => {
+router.get("/", (req, res) => {
     // Test all levels
     req.logger.debug("This is a debug message");
     req.logger.http("This is a http message");

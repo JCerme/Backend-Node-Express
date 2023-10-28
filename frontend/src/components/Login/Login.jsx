@@ -15,7 +15,7 @@ export const Login = () => {
             return;
         }
 
-        fetch('http://localhost:8080/auth/login', {
+        fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form),
@@ -33,7 +33,7 @@ export const Login = () => {
     };
 
     const externalLogin = (type) => {
-        const url = `http://localhost:8080/auth/${type}`;
+        const url = `http://localhost:8080/api/auth/${type}`;
         const width = 600;
         const height = 600;
         const y = window.top.outerHeight / 2 + window.top.screenY - ( height / 2);

@@ -16,7 +16,7 @@ export const Product = () => {
             credentials: 'include',
         })
         .then(res => res.json())
-        .then(data => setProduct(data.payload[0]))
+        .then(data => setProduct(data.payload))
         .catch(error => console.error('Hubo un problema con la operación fetch: ', error))
         .finally(() => setLoader(false))
     }, [])
