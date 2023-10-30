@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 // PRODUCTS SCHEMA
 const productSchema = new mongoose.Schema({
+    code: String,
     title: String,
     description: String,
     price: Number,

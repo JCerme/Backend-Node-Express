@@ -68,4 +68,5 @@ export default class Cart {
     clearCart = async (cid) => await cartsModel.findOneAndUpdate(
         { "_id": cid }, { "products": [] }
     )
+    deleteCart = async (cid) => await cartsModel.deleteOne({ "_id": cid });
 }

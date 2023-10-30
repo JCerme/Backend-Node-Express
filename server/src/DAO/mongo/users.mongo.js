@@ -5,4 +5,5 @@ export default class User{
     getUserByEmail = async (uemail) => await usersModel.findOne({"email": uemail}).lean();
     getUserById = async (uid) => await usersModel.findById(uid).lean();
     updateUser = async (uid, user) => await usersModel.findByIdAndUpdate(uid, user);
+    deleteUser = async (uid) => await usersModel.findByIdAndDelete(uid);
 }
