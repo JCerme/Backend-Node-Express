@@ -76,6 +76,8 @@ const initializePassport = () => {
             try {
                 const user = await usersModel.findOne({ email: email });
                 if (user) return done(null, false, { message: 'User already exists' });
+                if (!req.body.first_name || !req.body.last_name || !email || !password)
+                    return done(null, false, { message: 'Invalid credentials' });
 
                 const cart = new cartsModel()
                 await cart.save()

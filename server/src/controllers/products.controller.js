@@ -3,7 +3,8 @@ import response from "../helpers/response.js"
 
 export const getProducts = async (req, res, next) => {
     try {
-        const result = await productService.getProducts()
+        const { limit, page, query, value, sort } = req.query;
+        const result = await productService.getProducts(limit, page, query, value, sort)
         res.send(await response('success', result, req.query))
     } catch (error) {
         req.logger.error(error);

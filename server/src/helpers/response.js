@@ -31,7 +31,7 @@ function nextLink(page, pages, params){
 
 // Build the new URL
 function buildURL(params, page){
-    let url = `${params.url}?`;
+    let url = `/?`;
     if(page || params.page) url += `&page=${page || params.page}`;
     if(params.limit) url += `&limit=${params.limit}`;
     if(params.sort) url += `&sort=${params.sort}`;

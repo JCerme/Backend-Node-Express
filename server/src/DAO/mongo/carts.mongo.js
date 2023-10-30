@@ -55,8 +55,9 @@ export default class Cart {
     deleteProductFromCart = async (pid, cid) => await cartsModel.updateOne(
         {"_id": cid},{$pull:{"products":{product:pid}}}
     )
-    updateCart = async (cid, updatedCart) => await cartsModel.updateOne(
-        { "_id": cid }, { $set: updatedCart }
+    updateCart = async (cid, updatedCart) => await cartsModel.findOneAndUpdate(
+        { "_id": cid },
+        { $set: updatedCart }
     )
     updateProductUnits = async (pid, cid, units) => {
         await cartsModel.findOneAndUpdate(

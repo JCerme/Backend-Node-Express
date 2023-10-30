@@ -120,3 +120,5 @@ io.on('connection', (socket) => {
         io.emit('message', msg);
     });
 });
+
+export default app;

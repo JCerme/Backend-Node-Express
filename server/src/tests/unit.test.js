@@ -21,7 +21,7 @@ before(done => {
 });
 
 const assert = Assert.strict;
-describe('Testing for BoatPump', () => {
+describe('Unit Testing for BoatPump', () => {
     describe('Product CRUD', () => {
         it('Should get products', async () => {
             const productDAO = new Product();
