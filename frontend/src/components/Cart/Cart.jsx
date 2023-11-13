@@ -14,7 +14,7 @@ export const Cart = () => {
         setLoader(true);
         setSummaryLoader(true);
 
-        fetch('http://localhost:8080/api/cart', {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/cart`, {
             method: 'GET',
             credentials: 'include',
             headers: {

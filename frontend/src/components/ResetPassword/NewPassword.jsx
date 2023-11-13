@@ -8,7 +8,7 @@ export const NewPassword = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/check-pwd-code/${uid}/${code}`, { method: 'POST' })
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/check-pwd-code/${uid}/${code}`, { method: 'POST' })
         .then(response => response.json())
         .then(data => {
             if(data.message !== 'OK'){
@@ -30,7 +30,7 @@ export const NewPassword = () => {
                 toast.error("The password must have at least one lowercase letter, one uppercase letter, one number and one special character (@$!%?&.:_-), with a minimum length of 8 characters.");
                 return;
             }
-            fetch(`http://localhost:8080/api/update-password/${uid}/${code}`, {
+            fetch(`${import.meta.env.VITE_BASE_URL}/api/update-password/${uid}/${code}`, {
                 method: 'POST',
                 body: JSON.stringify(
                     {'uid': uid, 'password': e.target.new_password.value}

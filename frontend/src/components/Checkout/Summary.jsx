@@ -9,7 +9,7 @@ export const Summary = ({ policyRef, errors }) => {
     const [ loader, setLoader ] = useState(false)
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/cart', {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/cart`, {
             method: 'GET',
             credentials: 'include',
             headers: {

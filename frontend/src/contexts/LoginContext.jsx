@@ -9,7 +9,7 @@ export const LoginProvider = ({children}) => {
 
     const getUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/sessions/current`, { credentials: 'include' });
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/sessions/current`, { credentials: 'include' });
             const res = await response.json();
             setUser(res.user);
             return res.valid;
@@ -26,7 +26,7 @@ export const LoginProvider = ({children}) => {
             credentials: 'include',
         }
     
-        fetch(`http://localhost:8080/auth/login`, headers)
+        fetch(`${import.meta.env.VITE_BASE_URL}/auth/login`, headers)
         .then(response => response.json())
         .then(res => {
             if (res.message === 'OK') {
@@ -56,7 +56,7 @@ export const LoginProvider = ({children}) => {
             }),
         }
 
-        fetch('http://localhost:8080/auth/register', headers)
+        fetch(`${import.meta.env.VITE_BASE_URL}/auth/register`, headers)
         .then(response => response.json())
         .then(res => {
             if (res.message === 'OK') {

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 export const Mocking = () => {
     const [mocking, setMocking] = useState([])
     useEffect(() => {
-        fetch('http://localhost:8080/api/mockingproducts')
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/mockingproducts`)
         .then(res => res.json())
         .then(data => setMocking(data))
         .catch(error => setMocking('Hubo un problema con la operación fetch: ' + error))

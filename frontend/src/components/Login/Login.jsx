@@ -15,7 +15,7 @@ export const Login = () => {
             return;
         }
 
-        fetch('http://localhost:8080/api/auth/login', {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(form),
@@ -33,7 +33,7 @@ export const Login = () => {
     };
 
     const externalLogin = (type) => {
-        const url = `http://localhost:8080/api/auth/${type}`;
+        const url = `${import.meta.env.VITE_BASE_URL}/api/auth/${type}`;
         const width = 600;
         const height = 600;
         const y = window.top.outerHeight / 2 + window.top.screenY - ( height / 2);
@@ -47,7 +47,7 @@ export const Login = () => {
         
 
         window.addEventListener('message', (e) => {
-            if(e.origin === 'http://localhost:8080' && e.data) {
+            if(e.origin === `${import.meta.env.VITE_BASE_URL}` && e.data) {
                 setUser(e.data);
                 toast.success('Logged in successfully');
                 navigate('/');

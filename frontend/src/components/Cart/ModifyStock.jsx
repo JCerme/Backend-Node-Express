@@ -29,7 +29,7 @@ export const ModifyStock = ({pid, max, units, setCart, setSummaryLoader }) => {
             }
         }
 
-        fetch('http://localhost:8080/api/cart/product/' + pid, {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/cart/product/${pid}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
             credentials: 'include',

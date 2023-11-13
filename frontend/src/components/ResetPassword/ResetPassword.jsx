@@ -11,7 +11,7 @@ export const ResetPassword = () => {
         buttonRef.current.disabled = true;
         buttonRef.current.innerText = 'Sending...';
 
-        fetch(`http://localhost:8080/api/reset-password`, {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/reset-password`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({'to': e.target.email.value})

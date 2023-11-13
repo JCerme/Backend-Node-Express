@@ -10,7 +10,7 @@ export const Chat = () => {
     const { user } = useContext(LoginContext)
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/chat')
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/chat`)
         .then(res => res.json())
         .then(data => setMessages(data?.payload))
         .catch(error => console.error('Hubo un problema con la operación fetch: ', error))

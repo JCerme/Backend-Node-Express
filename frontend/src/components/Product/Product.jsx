@@ -10,7 +10,7 @@ export const Product = () => {
 
     useLayoutEffect(() => {
         setLoader(true)
-        fetch('http://localhost:8080/api/products/' + window.location.pathname.split('/').pop(), {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/products/${window.location.pathname.split('/').pop()}`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" },
             credentials: 'include',

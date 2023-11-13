@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 export const AddToCartBtn = ({pid}) => {
     const addToCart = () => {
-        fetch('http://localhost:8080/api/cart/product/' + pid, {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/cart/product/${pid}`, {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             credentials: 'include',

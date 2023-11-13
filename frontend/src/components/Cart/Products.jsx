@@ -4,7 +4,7 @@ import { ModifyStock } from './ModifyStock';
 export const Product = ({ products, setCart, setSummaryLoader }) => {
     const removeFromCart = (e, pid) => {
         e.preventDefault();
-        fetch('http://localhost:8080/api/cart/product/' + pid, {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/cart/product/${pid}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {

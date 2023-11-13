@@ -3,7 +3,7 @@ import { useState, useLayoutEffect } from 'react'
 export const Account = () => {
     const [user, setUser] = useState({})
     useLayoutEffect(() => {
-        fetch('http://localhost:8080/api/account', {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/account`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" },
             credentials: 'include',

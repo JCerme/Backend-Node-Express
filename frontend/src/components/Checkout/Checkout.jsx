@@ -76,7 +76,7 @@ export const Checkout = () => {
         setErrors(newErrors);
         if(Object.values(newErrors).some(value => value !== false)) return;
 
-        fetch('http://localhost:8080/api/checkout', {
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/checkout`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

@@ -5,7 +5,7 @@ export const Logout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/logout', { credentials: 'include' })
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/logout`, { credentials: 'include' })
         .then(res => res.json())
         .then(res => {
             !res.logged && navigate('/login');

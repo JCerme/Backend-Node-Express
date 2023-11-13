@@ -9,7 +9,7 @@ export const Products = () => {
 
     useLayoutEffect(() => {
         setLoader(true)
-        fetch('http://localhost:8080/api/' + window.location.search)
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/${window.location.search}`)
         .then(res => res.json())
         .then(data => setResult(data))
         .catch(error => console.error('Hubo un problema con la operación fetch: ', error))
