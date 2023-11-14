@@ -91,39 +91,39 @@ app.get('*', (req, res, next) => {
 });
 
 // WebSocket config
-import http from 'http';
-import sharedsession from "express-socket.io-session";
-import { Server } from 'socket.io';
-import { addMessage } from './controllers/messages.controller.js';
+// import http from 'http';
+// import sharedsession from "express-socket.io-session";
+// import { Server } from 'socket.io';
+// import { addMessage } from './controllers/messages.controller.js';
 
-const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: [
-            'http://localhost:8080',
-            'http://localhost:5173',
-            'http://boatpump.jcerme.com',
-        ],
-        methods: ['GET', 'POST', 'PUT', 'DELETE'],
-        credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization']
-    }
-});
+// const server = http.createServer(app);
+// const io = new Server(server, {
+//     cors: {
+//         origin: [
+//             'http://localhost:8080',
+//             'http://localhost:5173',
+//             'http://boatpump.jcerme.com',
+//         ],
+//         methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//         credentials: true,
+//         allowedHeaders: ['Content-Type', 'Authorization']
+//     }
+// });
 
-io.use(sharedsession(expressSession, {
-    autoSave: true
-}));
+// io.use(sharedsession(expressSession, {
+//     autoSave: true
+// }));
 
-server.listen(8081, () => logger.debug('Socket.IO server running on port 8081'));
-io.on('connection', (socket) => {
-    // Listen to 'connection' event
-    socket.on('new', user => logger.info(`${user} has connected`));
-    // Listen to new messages
-    socket.on('message', msg => {
-        msg.createdAt = new Date();
-        addMessage(socket.handshake.session, msg, socket); // Pasando el socket como tercer argumento
-        io.emit('message', msg);
-    });
-});
+// server.listen(8081, () => logger.debug('Socket.IO server running on port 8081'));
+// io.on('connection', (socket) => {
+//     // Listen to 'connection' event
+//     socket.on('new', user => logger.info(`${user} has connected`));
+//     // Listen to new messages
+//     socket.on('message', msg => {
+//         msg.createdAt = new Date();
+//         addMessage(socket.handshake.session, msg, socket); // Pasando el socket como tercer argumento
+//         io.emit('message', msg);
+//     });
+// });
 
 export default app;

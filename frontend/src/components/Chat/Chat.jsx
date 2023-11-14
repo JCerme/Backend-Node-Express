@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContext'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 
-const socket = io('http://localhost:8081', {
-    withCredentials: true,
-});
+// const socket = io('http://localhost:8081', {
+//     withCredentials: true,
+// });
 export const Chat = () => {
     const [messages, setMessages] = useState([])
     const { user } = useContext(LoginContext)
