@@ -47,7 +47,7 @@ app.use(cors({
 }));
 
 app.use('/static', express.static(__dirname + '/public'));
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.SERVER_PORT || 8080;
 export const httpServer = app.listen(PORT, () => {
     logger.debug('Server running on port ' + PORT);
     swaggerDocs(app, PORT)

@@ -10,7 +10,7 @@ import { logger } from "../helpers/logger.js";
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
-    const PORT = process.env.PORT || 8080;
+    const PORT = process.env.SERVER_PORT || 8080;
     // GitHub
     passport.use('github', new GitHubStrategy({
         clientID: process.env.GITHUB_CID,
