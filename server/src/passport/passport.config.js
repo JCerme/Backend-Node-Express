@@ -12,12 +12,12 @@ dotenv.config();
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
-    const PORT = process.env.SERVER_PORT || 8080;
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:8080'
     // GitHub
     passport.use('github', new GitHubStrategy({
         clientID: process.env.GITHUB_CID,
         clientSecret: process.env.GITHUB_SECRET,
-        callbackURL: `http://localhost:${PORT}/api/auth/githubcallback`
+        callbackURL: `${BASE_URL}/api/auth/githubcallback`
     }, async (accessToken, refreshToken, profile, done) => {
         try  {
             const email = profile._json.email || profile.emails[0].value 
@@ -45,7 +45,7 @@ const initializePassport = () => {
     passport.use('google', new GoogleStrategy({
         clientID: process.env.GOOGLE_CID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: `http://localhost:${PORT}/api/auth/googlecallback`,
+        callbackURL: `${BASE_URL}/api/auth/googlecallback`,
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const email = profile._json.email
