@@ -6,6 +6,8 @@ import GitHubStrategy from 'passport-github2';
 import GoogleStrategy from 'passport-google-oauth2';
 import cartsModel from "../DAO/mongo/models/carts.model.js";
 import { logger } from "../helpers/logger.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const LocalStrategy = local.Strategy;
 
