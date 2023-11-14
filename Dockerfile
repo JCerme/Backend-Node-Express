@@ -1,22 +1,44 @@
-# Base image: node
-FROM node
+# Etapa de construcción para el frontend
+FROM node:latest as build-stage
 
-# Make a folder where your app's source code can live
-WORKDIR /app
+# Directorio de trabajo para el frontend
+WORKDIR /app/frontend
 
-# Copy source code from your machine to the container
-COPY ./frontend/package.json /app
-COPY ./server/package.json /app
+# Copia los archivos de configuración del frontend
+COPY ./frontend/package*.json ./
 
-# Install dependencies
+# Instala las dependencias del frontend
 RUN npm install
 
-# Copy the rest of your app's source code from your machine to the container
-COPY . .
+# Copia el resto de los archivos del frontend
+COPY ./frontend/ .
 
-# Tell the image what to do when it starts as a container
-EXPOSE 8080
-CMD ["npm", "run", "dev"]
+# Construye la aplicación frontend
+RUN npm run build
+
+# Etapa para el backend
+FROM node:latest as production-stage
+
+# Directorio de trabajo para el backend
+WORKDIR /app/server
+
+# Copia los archivos de configuración del backend
+COPY ./server/package*.json ./
+
+# Instala las dependencias del backend
+RUN npm install
+
+# Copia los archivos del backend
+COPY ./server/ .
+
+# Copia el build del frontend al directorio public del servidor
+COPY --from=build-stage /app/frontend/dist /app/server/public
+
+# Expone el puerto que tu servidor necesita
+EXPOSE 3001
+
+# Comando para ejecutar el servidor
+CMD ["npm", "start"]
 
 
 # Build the image

@@ -35,7 +35,7 @@ export const MainRouter = () => {
                     <Route path="/mockingproducts" element={<Mocking/>}></Route>
                     <Route path="/reset-password" element={<ResetPassword/>}></Route>
                     <Route path="/reset-password/:uid/:code" element={<NewPassword/>}></Route>
-                    <Route path="*">"404 Not Found"</Route>
+                    {/* <Route path="*">"404 Not Found"</Route> */}
                 </Routes>
             </LoginProvider>
             <ToastContainer 

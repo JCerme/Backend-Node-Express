@@ -1,13 +1,13 @@
 // Express
 import express from 'express';
 // Modules
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import compression from 'express-compression';
+import path from 'path';
 // Utils
 import __dirname from '../utils.js';
 import initializePassport from './passport/passport.config.js';
@@ -20,7 +20,6 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.disable('x-powered-by');
-app.use(bodyParser.json());
 app.use(compression(
     //{brotli: { enabled:true, zlib: {}}} // Enable brotli compression
 ));
@@ -84,6 +83,12 @@ app.use('/api', resetPwdRouter);
 // Errors handler
 import { errors_handler } from './middlewares/errors_handler.js';
 app.use(errors_handler);
+
+// Load front-end index
+app.use('/', express.static('public', { redirect: false }));
+app.get('*', (req, res, next) => {
+    return res.sendFile(path.resolve("public/index.html"));
+});
 
 // WebSocket config
 import http from 'http';
