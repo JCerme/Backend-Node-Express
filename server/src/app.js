@@ -85,9 +85,9 @@ import { errors_handler } from './middlewares/errors_handler.js';
 app.use(errors_handler);
 
 // Load front-end index
-app.use('/', express.static('public', { redirect: false }));
+app.use('/', express.static('dist', { redirect: false }));
 app.get('*', (req, res, next) => {
-    return res.sendFile(path.resolve("public/index.html"));
+    return res.sendFile(path.resolve("dist/index.html"));
 });
 
 // WebSocket config
