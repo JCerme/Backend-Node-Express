@@ -46,13 +46,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use('/static', express.static(__dirname + '/public'));
-const PORT = process.env.SERVER_PORT || 8080;
-export const httpServer = app.listen(PORT, () => {
-    logger.debug('Server running on port ' + PORT);
-    swaggerDocs(app, PORT)
-});
-
 // Passport config
 initializePassport();
 app.use(passport.initialize());
@@ -91,39 +84,32 @@ app.get('*', (req, res, next) => {
 });
 
 // WebSocket config
-// import http from 'http';
-// import sharedsession from "express-socket.io-session";
-// import { Server } from 'socket.io';
-// import { addMessage } from './controllers/messages.controller.js';
+import sharedsession from "express-socket.io-session";
+import { Server } from 'socket.io';
+import { createServer } from 'node:http';
+import { addMessage } from './controllers/messages.controller.js';
 
-// const server = http.createServer(app);
-// const io = new Server(server, {
-//     cors: {
-//         origin: [
-//             'http://localhost:8080',
-//             'http://localhost:5173',
-//             'http://boatpump.jcerme.com',
-//         ],
-//         methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//         credentials: true,
-//         allowedHeaders: ['Content-Type', 'Authorization']
-//     }
-// });
+const server = createServer(app);
+const io = new Server(server);
+io.use(sharedsession(expressSession, {
+    autoSave: true
+}));
 
-// io.use(sharedsession(expressSession, {
-//     autoSave: true
-// }));
+io.on('connection', (socket) => {
+    // Listen to new messages
+    socket.on('message', msg => {
+        msg.createdAt = new Date();
+        // Pasando el socket como tercer argumento
+        addMessage(socket.handshake.session, msg, socket);
+        io.emit('message', msg);
+    });
+});
 
-// server.listen(8081, () => logger.debug('Socket.IO server running on port 8081'));
-// io.on('connection', (socket) => {
-//     // Listen to 'connection' event
-//     socket.on('new', user => logger.info(`${user} has connected`));
-//     // Listen to new messages
-//     socket.on('message', msg => {
-//         msg.createdAt = new Date();
-//         addMessage(socket.handshake.session, msg, socket); // Pasando el socket como tercer argumento
-//         io.emit('message', msg);
-//     });
-// });
+// Server start
+const PORT = process.env.SERVER_PORT || 8080;
+server.listen(PORT, () => {
+    logger.debug('Server running on port ' + PORT);
+    swaggerDocs(app, PORT)
+});
 
 export default app;

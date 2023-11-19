@@ -7,11 +7,11 @@ const messageSchema = new mongoose.Schema({
         default: 0,
         index: true,
     },
-    user_id: {
+    uid: {
         type: String,
         default: '',
     },
-    username: String,
+    name: String,
     message: String,
     admin: {
         type: Boolean,

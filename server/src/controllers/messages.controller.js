@@ -26,30 +26,24 @@ export const addMessage = async (context, data, socket = null) => {
     try {
         const msg = context.body || data;
 
-        let userId, userFullName;
-        if (context.session?.user) {
-            userId = context.session?.user?._id;
-            userFullName = context.session?.user?.first_name + ' ' + context.session?.user?.last_name;
-        } else if (data?.user) {
-            // Obtener datos del usuario desde el objeto data (opcional, solo si lo permites)
-            userId = data.user.id;
-            userFullName = data.user.name;
-        }
-
-        if (!userId) {
-            const errorMessage = 'User not logged in';
+        if (!msg.uid || !msg.name || !msg.message) {
+            const errorMessage = 'Missing required fields';
             if (context.res) {
-                return context.res.send(await response('error', errorMessage, context.query));
+                return context.res.send(
+                    await response('error', errorMessage, context.query)
+                );
             } else if (socket) {
                 return socket.emit('error', errorMessage);
             }
         }
 
-        msg.user_id = userId;
-        msg.user = userFullName;
+        const message = {
+            uid: msg.uid,
+            name: msg.name,
+            message: msg.message,
+        };
 
-        const result = await messageService.addMessage(msg);
-        
+        const result = await messageService.addMessage(message);
         if (context.res) {
             context.res.send(await response('success', result, context.query));
         } else if (socket) {

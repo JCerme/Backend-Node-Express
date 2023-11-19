@@ -7,5 +7,8 @@ export default class MessageRepository {
 
     getMessages = async () => await this.dao.getMessages()
     getMessageById = async (id) => await this.dao.getMessageById(id)
-    addMessage = async (message) => await this.dao.addMessage(new MessageDTO(message))
+    addMessage = async (message) => {
+        message = new MessageDTO(message);
+        await this.dao.addMessage(message);
+    }
 }

@@ -44,10 +44,11 @@ export const Login = () => {
             'targetWindow', 
             `toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=${width}, height=${height}, top=${y}, left=${x}`
         );
-        
 
+        let redirect = false
         window.addEventListener('message', (e) => {
-            if(e.origin === `${import.meta.env.VITE_BASE_URL}` && e.data) {
+            if(e.origin === `${import.meta.env.VITE_BASE_URL}` && e.data && !redirect) {
+                redirect = true;
                 setUser(e.data);
                 toast.success('Logged in successfully');
                 navigate('/');
@@ -99,9 +100,6 @@ export const Login = () => {
                     </span>
                 </form>
             </div>
-
-            <script src="/static/js/toast.js" defer></script>
-            <script src="/static/js/login.js" defer></script>
         </div>
     )
 }

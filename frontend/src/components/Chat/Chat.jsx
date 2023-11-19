@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContext'
-// import io from 'socket.io-client'
+import io from 'socket.io-client'
 
-// const socket = io('http://localhost:8081', {
-//     withCredentials: true,
-// });
 export const Chat = () => {
     const [messages, setMessages] = useState([])
     const { user } = useContext(LoginContext)
+    const socket = io();
 
     useEffect(() => {
+        document.body.scrollTop = document.body.scrollHeight;
+
         fetch(`${import.meta.env.VITE_BASE_URL}/api/chat`)
         .then(res => res.json())
         .then(data => setMessages(data?.payload))
@@ -18,14 +18,8 @@ export const Chat = () => {
 
     useEffect(() => {
         socket.on('message', (msg) => setMessages([...messages, msg]))
-
-        socket.on('error', (error) => {
-            console.log(error)
-        })
-
-        socket.on('success', (success) => {
-            console.log(success)
-        })
+        socket.on('error', (error) => console.log(error))
+        socket.on('success', (success) => console.log(success))
     }, [messages])
 
     const sendMessage = (e) => {
@@ -33,8 +27,8 @@ export const Chat = () => {
         const message = document.getElementById('msg').value
         if (message && user?._id) {
             socket.emit('message', {
-                user: user.first_name + ' ' + user.last_name,
-                user_id: user._id,
+                uid: user._id,
+                name: user.first_name + ' ' + user.last_name,
                 message: message
             })
             document.getElementById('msg').value = ''
@@ -49,13 +43,13 @@ export const Chat = () => {
             <div className="max-w-[768px] mx-auto pb-[100px] px-4 md:px-0">
                 <div id="messages">
                     {messages.map((msg, index) => (
-                        <div key={(msg.user_id + '_' + index)} className={
-                            (msg?.user_id && msg?.user_id === user?._id
+                        <div key={(msg.uid + '_' + index)} className={
+                            (msg?.uid && msg?.uid === user?._id
                             ? 'bg-blue-600 text-white ml-auto '
                             : 'bg-gray-100 mr-auto ') +
                             "w-[60%] relative rounded-lg py-4 px-6 leading-5 my-4 md:my-6"
                         }>
-                            <span className="text-xl font-bold">{msg.user}</span>
+                            <span className="text-xl font-bold">{msg.name}</span>
                             <p>{msg.message}</p>
                             <span className="absolute bg-white -bottom-1 -right-1 text-sm text-gray-400 border-[1px] border-border-solid border-gray-200 p-1 px-4 rounded-full">
                                 {new Date(msg.createdAt).toLocaleTimeString('en-US', {

@@ -45,7 +45,7 @@ router.get(
             `<script>
                 window.opener.postMessage(
                     '${JSON.stringify(new PublicUserDTO(req.user).get())}',
-                    'http://localhost:5173'
+                    '${process.env.BASE_URL}'
                     );
                 window.close();
             </script>`
@@ -68,7 +68,7 @@ router.get(
             `<script>
                 window.opener.postMessage(
                     '${JSON.stringify(new PublicUserDTO(req.user).get())}',
-                    'http://localhost:5173'
+                    '${process.env.BASE_URL}'
                     );
                 window.close();
             </script>`
