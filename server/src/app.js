@@ -39,7 +39,7 @@ app.use(cors({
     origin: [
         'http://localhost:8080',
         'http://localhost:5173',
-        'http://boatpump.jcerme.com',
+        'https://boatpump.jcerme.com',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,

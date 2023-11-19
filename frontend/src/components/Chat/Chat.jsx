@@ -5,7 +5,7 @@ import io from 'socket.io-client'
 export const Chat = () => {
     const [messages, setMessages] = useState([])
     const { user } = useContext(LoginContext)
-    const socket = io();
+    const socket = io(import.meta.env.VITE_BASE_URL)
 
     useEffect(() => {
         document.body.scrollTop = document.body.scrollHeight;
