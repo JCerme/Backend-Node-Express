@@ -3,8 +3,9 @@ import { Loader } from '../Loader'
 import { Products } from './Products'
 import { Total } from './Total'
 import { TermsCheckBox } from './TermsCheckBox'
+import { toast } from 'react-toastify'
 
-export const Summary = ({ policyRef, errors }) => {
+export const Summary = ({ CardElement, policyRef, errors }) => {
     const [ cart, setCart ] = useState({})
     const [ loader, setLoader ] = useState(false)
 
@@ -30,6 +31,9 @@ export const Summary = ({ policyRef, errors }) => {
                 </h2>
                 <Products cart={cart}/>
                 <Total cart={cart}/>
+                <div className='my-2 rounded-lg p-4 bg-gray-100'>
+                    <CardElement />
+                </div>
                 <TermsCheckBox policyRef={policyRef} errors={errors}/>
                 <button type="submit" className='w-full bg-blue-600 rounded-lg py-2 text-white font-bold text-lg hover:bg-blue-400 duration-300'>
                     Pay now

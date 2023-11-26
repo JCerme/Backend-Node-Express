@@ -64,6 +64,7 @@ import sessionsRouter from './router/sessions.router.js';
 import orderRoute from './router/order.router.js';
 import loggerRouter from './router/logger.router.js';
 import resetPwdRouter from './router/reset_pwd.router.js';
+import stripeRouter from './router/stripe.router.js';
 app.use('/api', viewsRouter);
 app.use('/api/products', prodRouter);
 app.use('/api/cart', cartsRouter);
@@ -72,6 +73,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/checkout', orderRoute);
 app.use('/api/logger', loggerRouter);
 app.use('/api', resetPwdRouter);
+app.use('/api/stripe', stripeRouter);
 
 // Errors handler
 import { errors_handler } from './middlewares/errors_handler.js';

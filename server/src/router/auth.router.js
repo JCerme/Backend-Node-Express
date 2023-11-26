@@ -15,6 +15,7 @@ router.post('/login', (req, res, next) => {
         if (!user) return res.status(401).json({ logged: false, message: info.message });
 
         req.session.user = user;
+        req.session.save();
         return res.status(200).json({ logged: true, user: new PublicUserDTO(user).get() });
     })(req, res, next);
 });
@@ -26,6 +27,7 @@ router.post('/register', (req, res, next) => {
         if (!user) return res.status(401).json({ message: info.message });
 
         req.session.user = user;
+        req.session.save();
         return res.status(200).json({ logged: true, user: new PublicUserDTO(user).get() });
     })(req, res, next);
 });
@@ -45,7 +47,7 @@ router.get(
             `<script>
                 window.opener.postMessage(
                     '${JSON.stringify(new PublicUserDTO(req.user).get())}',
-                    '${process.env.BASE_URL}'
+                    '${process.env.FRONTEND_URL}'
                     );
                 window.close();
             </script>`
@@ -68,7 +70,7 @@ router.get(
             `<script>
                 window.opener.postMessage(
                     '${JSON.stringify(new PublicUserDTO(req.user).get())}',
-                    '${process.env.BASE_URL}'
+                    '${process.env.FRONTEND_URL}'
                     );
                 window.close();
             </script>`
