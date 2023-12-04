@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast } from 'react-toastify'
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const ModifyStock = ({pid, max, units, setCart, setSummaryLoader }) => {
     const [currentUnits, setCurrentUnits] = useState(units);
+    const { token } = useContext(LoginContext);
 
     const updateStock = (e, increment) => {
         setSummaryLoader(true);
@@ -31,7 +33,10 @@ export const ModifyStock = ({pid, max, units, setCart, setSummaryLoader }) => {
 
         fetch(`${import.meta.env.VITE_BASE_URL}/api/cart/product/${pid}`, {
             method: 'PUT',
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
             credentials: 'include',
             body: JSON.stringify({ units: newUnits })
         })

@@ -1,20 +1,22 @@
-import { useState, useLayoutEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { UserCard } from './UserCard';
 import { Orders } from './Orders';
 import { Files } from './Files';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const Account = () => {
     const [user, setUser] = useState({});
+    const { token } = useContext(LoginContext);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         fetch(`${import.meta.env.VITE_BASE_URL}/api/account`, {
             method: 'GET',
-            headers: { "Content-Type": "application/json" },
+            headers: { "Authorization": `Bearer ${token}` },
             credentials: 'include',
         })
         .then(res => res.json())
         .then(data => setUser(data.user))
-    }, [])
+    }, [token])
 
     return (
         <div className="max-w-[1024px] py-4 mx-auto mt-16 mb-24 grid grid-cols-3 gap-20">

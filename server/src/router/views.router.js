@@ -1,10 +1,11 @@
 import { Router } from 'express';
 const router = Router();
-import { authentication } from '../helpers/auth.js';
+import { authentication } from '../middlewares/auth.js';
 import { getProducts, getProductByID } from "../controllers/products.controller.js";
 import { getCart, getCartByID } from "../controllers/carts.controller.js";
 import { getMessages } from "../controllers/messages.controller.js";
 import PublicUserDTO from '../DAO/DTO/publicUser.dto.js';
+import { userService } from '../services/index.js';
 
 // MAIN ROUTER
 router.get('/', getProducts);
@@ -33,20 +34,21 @@ router.get('/mockingproducts', (req, res) => {
 });
 
 // Carts
-router.get('/cart', getCart);
+router.get('/cart', authentication, getCart);
 router.get('/cart/:cid', getCartByID);
 
 // Logout
 router.get("/logout", (req, res) => {
-    req.session.destroy();
     res.json({ logged: false });
 });
+
 // Account
-router.get("/account", authentication, (req, res) => {
-    res.json({ user: new PublicUserDTO(req.session.user) });
+router.get("/account", authentication, async (req, res) => {
+    const user = new PublicUserDTO(await userService.getUserById(req.uid));
+    res.json({ user });
 });
 
 // Chat
-router.get('/chat', getMessages);
+router.get('/chat', authentication, getMessages);
 
 export default router;

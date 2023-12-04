@@ -5,7 +5,7 @@ import { LoginContext } from "../../contexts/LoginContext";
 
 export const Login = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(LoginContext);
+    const { setLogged, setToken } = useContext(LoginContext);
 
     function sendLogin(e) {
         e.preventDefault();
@@ -24,11 +24,17 @@ export const Login = () => {
         .then(res => res.json())
         .then(res => {
             if(res.logged) {
-                setUser(res.user);
+                setLogged(res.logged);
+                setToken(res.token);
+                localStorage.setItem('token', res.token);
+                toast.success('Logged in successfully');
                 navigate('/');
             } else {
                 toast.error(res.message);
             }
+        })
+        .catch(err => {
+            toast.error(err.message);
         });
     };
 
@@ -49,7 +55,9 @@ export const Login = () => {
         window.addEventListener('message', (e) => {
             if(e.origin === `${import.meta.env.VITE_BASE_URL}` && e.data && !redirect) {
                 redirect = true;
-                setUser(e.data);
+                setToken(e.data);
+                setLogged(true);
+                localStorage.setItem('token', e.data);
                 toast.success('Logged in successfully');
                 navigate('/');
             }

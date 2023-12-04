@@ -1,7 +1,12 @@
 import { Router } from "express";
 const router = Router();
 import passport from 'passport';
-import PublicUserDTO from "../DAO/DTO/publicUser.dto.js";
+import UserDTO from "../DAO/DTO/users.dto.js"
+import dotenv from 'dotenv';
+import { userService, cartService } from "../services/index.js";
+import { generateToken } from "../../utils.js";
+import { createHash, isValidPassword } from "../../utils.js";
+dotenv.config();
 
 // Error
 router.get('/error', (req, res) => {
@@ -9,27 +14,52 @@ router.get('/error', (req, res) => {
 });
 
 // Login
-router.post('/login', (req, res, next) => {
-    passport.authenticate('login', (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ logged: false, message: info.message });
+router.post('/login', async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
 
-        req.session.user = user;
-        req.session.save();
-        return res.status(200).json({ logged: true, user: new PublicUserDTO(user).get() });
-    })(req, res, next);
+        // Verify if user exists
+        const user = await userService.getUserByEmail(email);
+        if (!user || !isValidPassword(user, password)) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // JWT Token
+        const token = generateToken(user);
+        res.status(201).json({ token, logged: true });
+    } catch (error) {
+        req.logger.error(error);
+        next(error);
+    }
 });
 
 // Register
-router.post('/register', (req, res, next) => {
-    passport.authenticate('register', (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ message: info.message });
+router.post('/register', async (req, res, next) => {
+    try {
+        const { email, password, first_name, last_name } = req.body;
 
-        req.session.user = user;
-        req.session.save();
-        return res.status(200).json({ logged: true, user: new PublicUserDTO(user).get() });
-    })(req, res, next);
+        // Verify if user exists
+        const existingUser = await userService.getUserByEmail(email);
+        if (existingUser) return res.status(400).json({ message: 'User already exists' });
+
+        // Create cart and user
+        const cart = await cartService.addCart();
+        const newUser = new UserDTO({
+            first_name,
+            last_name,
+            email,
+            password: createHash(password),
+            cart: cart._id
+        });
+        const savedUser = await userService.addUser(newUser);
+
+        // JWT Token
+        const token = generateToken(savedUser);
+        res.status(201).json({ token, logged: true });
+    } catch (error) {
+        req.logger.error(error);
+        next(error);
+    }
 });
 
 // GitHub
@@ -42,11 +72,11 @@ router.get(
     '/githubcallback',
     passport.authenticate('github', { failureRedirect: '/error'}),
     async(req, res) => {
+        console.log(req.user)
         req.session.user = req.user
         return res.send(
             `<script>
                 window.opener.postMessage(
-                    '${JSON.stringify(new PublicUserDTO(req.user).get())}',
                     '${process.env.FRONTEND_URL}'
                     );
                 window.close();
@@ -65,11 +95,11 @@ router.get(
     '/googlecallback',
     passport.authenticate( 'google', { failureRedirect: '/api/auth/error' }),
     async(req, res) => {
+        console.log(req.user)
         req.session.user = req.user
         return res.send(
             `<script>
                 window.opener.postMessage(
-                    '${JSON.stringify(new PublicUserDTO(req.user).get())}',
                     '${process.env.FRONTEND_URL}'
                     );
                 window.close();

@@ -1,13 +1,15 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { useElements, useStripe } from '@stripe/react-stripe-js';
 import { CustomerForm } from './CustomerForm'
 import { CardElement } from '@stripe/react-stripe-js'
 import { Summary } from './Summary'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { LoginContext } from '../../contexts/LoginContext';
 // import { Offers } from './Offers';
 
-export const Form = ({clientSecret}) => {
+export const Form = ({ paymentIntentId }) => {
+    const { token } = useContext(LoginContext);
     const [errors, setErrors] = useState({
         name: false,
         lastName: false,
@@ -28,6 +30,7 @@ export const Form = ({clientSecret}) => {
     let stateRef = useRef(null)
     let countryRef = useRef(null)
     let policyRef = useRef(null)
+    let btnRef = useRef(null)
 
     const navigate = useNavigate();
     const stripe = useStripe();
@@ -35,6 +38,7 @@ export const Form = ({clientSecret}) => {
 
     const sendForm = async (e) => {
         e.preventDefault();
+        btnRef.current.disabled = true;
         let newErrors = {...errors};
 
         const fields = [
@@ -111,8 +115,11 @@ export const Form = ({clientSecret}) => {
         fetch(`${import.meta.env.VITE_BASE_URL}/api/checkout`, {
             method: 'POST',
             credentials: 'include',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({...formData}),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ ...formData, paymentIntentId }),
         })
         .then(response => response.json())
         .then(async data => {
@@ -123,7 +130,8 @@ export const Form = ({clientSecret}) => {
                 toast.error(data.payload.message);
             }
         })
-        .catch(err => toast.error(err));
+        .catch(err => toast.error(err))
+        .finally(() => btnRef.current.disabled = false)
     }
 
     return (
@@ -143,7 +151,7 @@ export const Form = ({clientSecret}) => {
                 />
             </div>
             <div className='sticky top-24 col-span-2 flex flex-col gap-6'>
-                <Summary CardElement={CardElement} policyRef={policyRef} errors={errors}/>
+                <Summary btnRef={btnRef} CardElement={CardElement} policyRef={policyRef} errors={errors}/>
                 {/* <Offers/> */}
             </div>
         </form>

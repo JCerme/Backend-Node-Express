@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer';
 import CustomError from '../services/errors/custom_error.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export default class Mail{
     constructor(){
@@ -8,8 +10,8 @@ export default class Mail{
             port: process.env.MAIL_PORT || 465,
             secure: true,
             auth: {
-                user: process.env.MAIL_USER || "contact@jcerme.com",
-                pass: process.env.MAIL_PASSWORD,
+                user: process.env.MAIL_USER || "test@jcerme.com",
+                pass: process.env.MAIL_PASSWORD || "Tests@1234",
             },
         });
     }

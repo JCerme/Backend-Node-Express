@@ -4,13 +4,13 @@ import OrderDTO from '../DTO/order.dto.js';
 import cartsModel from './models/carts.model.js';
 import orderModel from './models/orders.model.js';
 import productModel from './models/products.model.js';
+import usersModel from './models/users.model.js';
 
 export default class Order {
     getOrderByCode = async (code) => {
         const order = orderModel.find({ code });
-        return order.purchaser === req.session.user._id
-        ? order
-        : { status: 401, message: 'Unauthorized' };
+        if (!order) return { status: 404, message: 'Order not found' };
+        return { status: 200, message: 'Order found', order };
     }
 
     createOrder = async (order) => {
@@ -28,7 +28,8 @@ export default class Order {
                 'User tried to create an order, but the user was not logged in'
             );
 
-            const cart = await cartsModel.findById(order?.purchaser?.cart);
+            const user = await usersModel.findById(order.purchaser);
+            const cart = await cartsModel.findById(user.cart);
             if(!cart) {
                 CustomError.createError(
                     ERR_DICT.CART,

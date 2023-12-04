@@ -4,7 +4,7 @@ import { LoginContext } from '../../contexts/LoginContext';
 
 export const Register = () => {
     const navigate = useNavigate();
-    const { setUser } = useContext(LoginContext);
+    const { setLogged, setToken } = useContext(LoginContext);
 
     function sendRegister(e) {
         e.preventDefault();
@@ -23,11 +23,16 @@ export const Register = () => {
         .then(res => res.json())
         .then(res => {
             if(res.logged) {
-                setUser(res.user);
+                setLogged(res.logged);
+                setToken(res.token);
+                localStorage.setItem('token', res.token);
                 navigate('/');
             } else {
                 toast.error(res.message);
             }
+        })
+        .catch(err => {
+            toast.error(err.message);
         });
     };
 

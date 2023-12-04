@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { toast } from 'react-toastify';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const AddToCartBtn = ({pid}) => {
+    const { token } = useContext(LoginContext);
+
     const addToCart = () => {
         fetch(`${import.meta.env.VITE_BASE_URL}/api/cart/product/${pid}`, {
             method: 'POST',
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
             credentials: 'include',
         })
         .then(res => res.json())

@@ -9,12 +9,16 @@ import PaymentService from '../../services/PaymentService'
 export const Checkout = () => {
     const [modal, setModal] = useState(false)
     const [clientSecret, setClientSecret] = useState(null);
+    const [paymentIntentId, setPaymentIntentId] = useState(null);
 
     useEffect(() => {
         const getClientSecret = async () => {
             const service = new PaymentService();
             service.createPaymentIntent({
-                callbackSuccess: res => setClientSecret(res.payload.client_secret)
+                callbackSuccess: res => {
+                    setClientSecret(res.payload.client_secret)
+                    setPaymentIntentId(res.payload.id)
+                },
             });
         }
         getClientSecret();
@@ -29,7 +33,7 @@ export const Checkout = () => {
                     new adventure
                     </span>
                 </h2>
-                <Form clientSecret={clientSecret}/>
+                <Form clientSecret={clientSecret} paymentIntentId={paymentIntentId}/>
                 {modal && <SuccessModal state={modal} setModal={setModal}/>}
             </div>
         </Elements>

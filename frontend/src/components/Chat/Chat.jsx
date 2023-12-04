@@ -4,16 +4,20 @@ import io from 'socket.io-client'
 
 export const Chat = () => {
     const [messages, setMessages] = useState([])
-    const { user } = useContext(LoginContext)
+    const { token } = useContext(LoginContext)
     const socket = io(import.meta.env.VITE_BASE_URL)
 
     useEffect(() => {
         document.body.scrollTop = document.body.scrollHeight;
 
-        fetch(`${import.meta.env.VITE_BASE_URL}/api/chat`)
+        fetch(`${import.meta.env.VITE_BASE_URL}/api/chat`, {
+            method: 'GET',
+            headers: { "Authorization": `Bearer ${token}` },
+            credentials: 'include',
+        })
         .then(res => res.json())
         .then(data => setMessages(data?.payload))
-        .catch(error => console.error('Hubo un problema con la operación fetch: ', error))
+        .catch(error => console.error('Hubo un problema con la solicitud: ', error))
     }, [])
 
     useEffect(() => {

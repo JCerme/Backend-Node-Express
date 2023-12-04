@@ -4,14 +4,18 @@ export const LoginContext = createContext();
 
 export const LoginProvider = ({children}) => {
     const [logged, setLogged] = useState(false)
-    const [user, setUser] = useState({})
+    const [token, setToken] = useState(localStorage.getItem('token') || '');
     const navigate = useNavigate();
 
     const getUser = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/sessions/current`, { credentials: 'include' });
+            const headers = {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}`},
+                credentials: 'include',
+            }
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/sessions/current`, headers);
             const res = await response.json();
-            setUser(res.user);
             return res.valid;
         } catch(e) {
             navigate('/')
@@ -74,8 +78,8 @@ export const LoginProvider = ({children}) => {
         <LoginContext.Provider value={{
             logged,
             setLogged,
-            user,
-            setUser,
+            token,
+            setToken,
             getUser,
             login,
             register,

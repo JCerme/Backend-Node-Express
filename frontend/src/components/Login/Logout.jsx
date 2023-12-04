@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react'
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const Logout = () => {
     const navigate = useNavigate();
+    const { setLogged, setToken } = useContext(LoginContext);
 
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_BASE_URL}/api/logout`, { credentials: 'include' })
-        .then(res => res.json())
-        .then(res => {
-            !res.logged && navigate('/login');
-        });
-    }, []);
+    setLogged(false);
+    setToken('');
+    localStorage.removeItem('token');
+    navigate('/login');
 }

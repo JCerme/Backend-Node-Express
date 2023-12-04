@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { ModifyStock } from './ModifyStock';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const Product = ({ products, setCart, setSummaryLoader }) => {
+    const { token } = useContext(LoginContext);
+
     const removeFromCart = (e, pid) => {
         e.preventDefault();
         fetch(`${import.meta.env.VITE_BASE_URL}/api/cart/product/${pid}`, {
             method: 'DELETE',
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
             },
         })
         .then(response => response.json())

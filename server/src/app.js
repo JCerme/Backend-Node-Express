@@ -4,8 +4,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
-import session from 'express-session';
-import cookieParser from 'cookie-parser';
 import compression from 'express-compression';
 import path from 'path';
 // Utils
@@ -21,18 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.disable('x-powered-by');
 app.use(compression(
-    //{brotli: { enabled:true, zlib: {}}} // Enable brotli compression
+    {brotli: { enabled:true, zlib: {}}} // Enable brotli compression
 ));
-
-// Sessions
-app.use(cookieParser());
-const expressSession = session({
-    secret: process.env.SECRET,
-    resave: true,               // Maintain session active
-    saveUninitialized: true,    // Save session even if it's not initialized
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 } // 24 hours
-});
-app.use(expressSession);
 
 // CORS
 app.use(cors({
@@ -49,7 +37,6 @@ app.use(cors({
 // Passport config
 initializePassport();
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Loggers
 import { addLogger } from './middlewares/loggers.js';
@@ -86,26 +73,22 @@ app.get('*', (req, res, next) => {
 });
 
 // WebSocket config
-import sharedsession from "express-socket.io-session";
 import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 import { addMessage } from './controllers/messages.controller.js';
 
 const server = createServer(app);
 const io = new Server(server);
-io.use(sharedsession(expressSession, {
-    autoSave: true
-}));
 
-io.on('connection', (socket) => {
-    // Listen to new messages
-    socket.on('message', msg => {
-        msg.createdAt = new Date();
-        // Pasando el socket como tercer argumento
-        addMessage(socket.handshake.session, msg, socket);
-        io.emit('message', msg);
-    });
-});
+// io.on('connection', (socket) => {
+//     // Listen to new messages
+//     socket.on('message', msg => {
+//         msg.createdAt = new Date();
+//         // Pasando el socket como tercer argumento
+//         addMessage(socket.handshake.session, msg, socket);
+//         io.emit('message', msg);
+//     });
+// });
 
 // Server start
 const PORT = process.env.SERVER_PORT || 8080;
