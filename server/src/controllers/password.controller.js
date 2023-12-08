@@ -3,6 +3,8 @@ import { userService } from "../services/index.js";
 import { pwdCodeService } from "../services/index.js";
 import { sendMail } from "./mail.controller.js";
 import { createHash } from "../../utils.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const sendPwdCode = async (req, res, next) => {
     try {
@@ -21,12 +23,13 @@ export const sendPwdCode = async (req, res, next) => {
             message: 'Error creating password code',
         });
 
+        const BASE_URL = process.env.BASE_URL || 'http://localhost:8080'
         req.body.subject = 'Reset password code for BoatPump';
         req.body.html = `
             <h1>Reset password for BoatPump</h1>
             <p>Looks like you forgot your password. No worries! Click the button below to reset your password or <a href="http://localhost:5173/reset-password/${user._id}/${code}">click here</a>.<br/>
                 It will expire in 1 hour. If you didn't request this, you can safely ignore this email.</p>
-            <a href="http://localhost:5173/reset-password/${user._id}/${code}">
+            <a href="${BASE_URL}/reset-password/${user._id}/${code}">
                 <button style="background-color:#2563eb;font-weight:600;color:white;border:none;padding: 10px 30px;border-radius:5px;cursor:pointer;">
                     Reset password here
                 </button>
