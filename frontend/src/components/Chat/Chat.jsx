@@ -1,15 +1,15 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContext'
 import io from 'socket.io-client'
 
 export const Chat = () => {
-    const [messages, setMessages] = useState([])
-    const { token } = useContext(LoginContext)
+    const [ messages, setMessages ] = useState([])
+    const { token, user } = useContext(LoginContext)
     const socket = io(import.meta.env.VITE_BASE_URL)
+    const messageRef = useRef(null);
 
     useEffect(() => {
         document.body.scrollTop = document.body.scrollHeight;
-
         fetch(`${import.meta.env.VITE_BASE_URL}/api/chat`, {
             method: 'GET',
             headers: { "Authorization": `Bearer ${token}` },
@@ -17,8 +17,8 @@ export const Chat = () => {
         })
         .then(res => res.json())
         .then(data => setMessages(data?.payload))
-        .catch(error => console.error('Hubo un problema con la solicitud: ', error))
-    }, [])
+        .catch(error => console.error('Hubo un problema con la solicitud: ', error));
+    }, []);
 
     useEffect(() => {
         socket.on('message', (msg) => setMessages([...messages, msg]))
@@ -28,14 +28,19 @@ export const Chat = () => {
 
     const sendMessage = (e) => {
         e.preventDefault()
-        const message = document.getElementById('msg').value
+        console.log('sending message...')
+        const message = messageRef.current.value;
         if (message && user?._id) {
             socket.emit('message', {
                 uid: user._id,
                 name: user.first_name + ' ' + user.last_name,
                 message: message
             })
-            document.getElementById('msg').value = ''
+            messageRef.current.value = '';
+        } else {
+            console.log('No message to send')
+            console.log('user: ', user)
+            console.log('message: ', message)
         }
     }
 
@@ -67,7 +72,7 @@ export const Chat = () => {
                 <form id="inputMsg" onSubmit={(e) => sendMessage(e)}>
                     <div className="w-full fixed bottom-4 md:bottom-8 left-0">
                         <div className="relative w-[calc(100%-2rem)] md:w-[768px] mx-auto">
-                            <input id="msg" name="msg" type="text"
+                            <input ref={messageRef} name="msg" type="text"
                             className="rounded-lg w-full py-4 px-6 bg-gray-100 leading-5 border"
                             placeholder="Write your message..."></input>
                             <button type="submit" id="sendMsg" className="h-[calc(100%-1rem)] aspect-square bg-blue-600 absolute right-2 rounded-lg top-1/2 -translate-y-1/2">

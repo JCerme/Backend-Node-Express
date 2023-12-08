@@ -90,15 +90,15 @@ import { addMessage } from './controllers/messages.controller.js';
 const server = createServer(app);
 const io = new Server(server);
 
-// io.on('connection', (socket) => {
-//     // Listen to new messages
-//     socket.on('message', msg => {
-//         msg.createdAt = new Date();
-//         // Pasando el socket como tercer argumento
-//         addMessage(socket.handshake.session, msg, socket);
-//         io.emit('message', msg);
-//     });
-// });
+io.on('connection', (socket) => {
+    // Listen to new messages
+    socket.on('message', msg => {
+        msg.createdAt = new Date();
+        // Pasando el socket como tercer argumento
+        addMessage(socket.handshake.session, msg, socket);
+        io.emit('message', msg);
+    });
+});
 
 // Server start
 const PORT = process.env.SERVER_PORT || 8080;

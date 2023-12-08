@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 export const LoginContext = createContext();
 
 export const LoginProvider = ({children}) => {
-    const [logged, setLogged] = useState(false)
-    const [token, setToken] = useState(localStorage.getItem('token') || '');
+    const [ user, setUser ] = useState({});
+    const [ logged, setLogged ] = useState(false)
+    const [ token, setToken ] = useState(localStorage.getItem('token') || '');
     const navigate = useNavigate();
 
     const getUser = async () => {
         try {
+            if (!token) return navigate('/login');
             const headers = {
                 method: 'GET',
                 headers: { 'Authorization': `Bearer ${token}`},
@@ -16,7 +18,8 @@ export const LoginProvider = ({children}) => {
             }
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/sessions/current`, headers);
             const res = await response.json();
-            return res.valid;
+            if (res.valid) setUser(res.user);
+            return res;
         } catch(e) {
             navigate('/')
         }
@@ -76,6 +79,8 @@ export const LoginProvider = ({children}) => {
 
     return (
         <LoginContext.Provider value={{
+            user,
+            setUser,
             logged,
             setLogged,
             token,

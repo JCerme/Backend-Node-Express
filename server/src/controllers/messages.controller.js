@@ -1,5 +1,6 @@
 import { messageService } from "../services/index.js";
 import response from "../helpers/response.js";
+import { logger } from "../helpers/logger.js";
 
 export const getMessages = async (req, res, next) => {
     try {
@@ -24,13 +25,13 @@ export const getMessageById = async (req, res, next) => {
 
 export const addMessage = async (context, data, socket = null) => {
     try {
-        const msg = context.body || data;
+        const msg = context?.body || data;
 
         if (!msg.uid || !msg.name || !msg.message) {
             const errorMessage = 'Missing required fields';
-            if (context.res) {
-                return context.res.send(
-                    await response('error', errorMessage, context.query)
+            if (context?.res) {
+                return context?.res?.send(
+                    await response('error', errorMessage, context?.query)
                 );
             } else if (socket) {
                 return socket.emit('error', errorMessage);
@@ -44,21 +45,21 @@ export const addMessage = async (context, data, socket = null) => {
         };
 
         const result = await messageService.addMessage(message);
-        if (context.res) {
-            context.res.send(await response('success', result, context.query));
+        if (context?.res) {
+            context?.res.send(await response('success', result, context?.query));
         } else if (socket) {
             socket.emit('success', 'Message added successfully');
         }
     } catch (error) {
-        req.logger.error(error);
-        if (context.res) {
-            context.res.status(500).send(await response('error', 'Server error', context.query));
+        console.log(error);
+        logger.error(error);
+        if (context?.res) {
+            context?.res?.status(500).send(await response('error', 'Server error', context?.query));
         } else if (socket) {
             socket.emit('error', 'Server error');
         }
     }
 }
-
 
 export const updateMessage = async (req, res, next) => {
     try {

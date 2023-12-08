@@ -5,7 +5,7 @@ import { Files } from './Files';
 import { LoginContext } from '../../contexts/LoginContext';
 
 export const Account = () => {
-    const [user, setUser] = useState({});
+    const [ user, setUser ] = useState({});
     const { token } = useContext(LoginContext);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export const Account = () => {
             credentials: 'include',
         })
         .then(res => res.json())
-        .then(data => setUser(data.user))
+        .then(data => setUser(data))
     }, [token])
 
     return (

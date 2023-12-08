@@ -8,8 +8,8 @@ export const PrivateRoute = ({children}) => {
     const navigate = useNavigate();
     useEffect(() => {
         (async () => {
-            const valid = await getUser();
-            if (!valid) navigate('/login');
+            const data = await getUser();
+            if (!data?.valid) navigate('/login');
         })()
     }, [])
 

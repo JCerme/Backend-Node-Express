@@ -45,7 +45,7 @@ router.get("/logout", (req, res) => {
 // Account
 router.get("/account", authentication, async (req, res) => {
     const user = new PublicUserDTO(await userService.getUserById(req.uid));
-    res.json({ user });
+    res.json(user);
 });
 
 // Chat
