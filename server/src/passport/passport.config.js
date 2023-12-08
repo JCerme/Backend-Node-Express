@@ -7,6 +7,7 @@ import { logger } from "../helpers/logger.js";
 import { userService, cartService } from "../services/index.js";
 
 import dotenv from 'dotenv';
+import { generateToken } from "../../utils.js";
 dotenv.config();
 
 const JWTStrategy = jwt.Strategy
@@ -22,22 +23,23 @@ const initializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) => {
         try  {
             const email = profile._json.email || profile.emails[0].value 
-            const user = await userService.getUserByEmail(email)
-            if(user) return done(null, user)
-
-            const cart = cartService.addCart()
-            const newUser = {
-                first_name: profile._json.name,
-                email,
-                password: '',
-                cart: cart._id
+            let user = await userService.getUserByEmail(email)
+            if(!user) {
+                const cart = await cartService.addCart()
+                const newUser = {
+                    first_name: profile._json.name,
+                    email,
+                    password: '',
+                    cart: cart._id
+                }
+                user = await userService.addUser(newUser)
             }
 
-            const result = await userService.addUser(newUser)
-            return done(null, result)
+            user.token = generateToken(user)
+            return done(null, user)
         } catch(error) {
             logger.error(error);
-            return done(error, false, { message: 'Error to login with github' + e })
+            return done(error, false, { message: 'Error to login with github' + error })
         }
     }));
 
@@ -49,22 +51,22 @@ const initializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const email = profile._json.email
-            const user = await userService.getUserByEmail(email)
-            if (user) return done(null, user)
-
-            const cart = cartService.addCart()
-            const newUser = {
-                first_name: profile._json.name,
-                email,
-                password: '',
-                cart: cart._id
+            let user = await userService.getUserByEmail(email)
+            if (!user) {
+                const cart = await cartService.addCart()
+                const newUser = {
+                    first_name: profile._json.name,
+                    email,
+                    password: '',
+                    cart: cart._id
+                }
+                user = await userService.addUser(newUser)
             }
-
-            const result = await userService.addUser(newUser)
-            return done(null, result)
+            user.token = generateToken(user)
+            return done(null, user)
         } catch(error) {
             logger.error(error);
-            return done(error, false, { message: 'Error to login with google' + e })
+            return done(error, false, { message: 'Error to login with google' + error })
         }
     }));
 
@@ -81,6 +83,15 @@ const initializePassport = () => {
             return done(error, false);
         }
     }));
+
+    // Serialize and deserialize user
+    passport.serializeUser((user, done) => {
+        done(null, user._id)
+    })
+    passport.deserializeUser(async (id, done) => {
+        const user = await usersModel.findById(id)
+        done(null, user)
+    })
 }
 
 export default initializePassport;

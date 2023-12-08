@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Form } from './Form'
 import { SuccessModal } from './SuccessModal'
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PKEY);
+import { toast } from 'react-toastify';
 import PaymentService from '../../services/PaymentService'
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PKEY);
 
 export const Checkout = () => {
     const [modal, setModal] = useState(false)
     const [clientSecret, setClientSecret] = useState(null);
     const [paymentIntentId, setPaymentIntentId] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getClientSecret = async () => {
@@ -19,6 +22,7 @@ export const Checkout = () => {
                     setClientSecret(res.payload.client_secret)
                     setPaymentIntentId(res.payload.id)
                 },
+                callbackError: () => navigate('/')
             });
         }
         getClientSecret();

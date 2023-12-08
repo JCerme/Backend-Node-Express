@@ -44,7 +44,7 @@ export const Summary = ({ cart, summaryLoader }) => {
                     <span>${getTotal()}</span>
                 </div>
             </div>
-            <Link to="/checkout" className="block text-center bg-blue-600 hover:bg-blue-700 duration-300 rounded w-full text-white py-2 mt-4">
+            <Link to="/checkout" className="block text-center font-bold bg-blue-600 hover:bg-blue-700 duration-300 rounded w-full text-white py-2 mt-4">
                 Checkout
             </Link>
             </>)}

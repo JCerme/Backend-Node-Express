@@ -2,7 +2,7 @@ import productsModel from '../DAO/mongo/models/products.model.js';
 
 export default async function response(status, result, params){
     const documents = await productsModel.find().count();
-    let pages = (params.limit && Math.floor(documents / params.limit)) || 1;
+    let pages = (params.limit && Math.ceil(documents / params.limit)) || Math.ceil(documents / 6);
     let page = Number(params.page) || 1;
 
     return {

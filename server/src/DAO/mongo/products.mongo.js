@@ -3,7 +3,7 @@ import ERR_DICT from "../../services/errors/enums.js";
 import productsModel from "./models/products.model.js";
 
 export default class Product {
-    getProducts = async (limit = 20, page = 1, query = null, value = null, sort) => {
+    getProducts = async (limit = 6, page = 1, query = null, value = null, sort) => {
         try {
             const filter = query && value ? { [query]: value } : {};
             const products = await productsModel.find(filter).limit(limit).skip((limit * page) - limit).sort({"price": sort || 1}).lean();

@@ -2,7 +2,9 @@ import ERR_DICT from "../services/errors/enums.js"
 
 export const errors_handler = (error, req, res, next) => {
     const errorExists = Object.values(ERR_DICT).includes(error.code);
+    console.log(error)
 
+    req.logger.error(error);
     if(errorExists) {
         return res.status(400).send({
             status: 400,
@@ -17,6 +19,7 @@ export const errors_handler = (error, req, res, next) => {
             code: ERR_DICT.UNKNOWN_ERROR,
             name: "UnknownError",
             message: "Something went wrong, try again later or contact us",
+            cause: error.message
         })
     }
 }

@@ -38,7 +38,7 @@ export const Summary = ({ btnRef, CardElement, policyRef, errors }) => {
                     <CardElement />
                 </div>
                 <TermsCheckBox policyRef={policyRef} errors={errors}/>
-                <button ref={btnRef} type="submit" className='w-full bg-blue-600 rounded-lg py-2 text-white font-bold text-lg hover:bg-blue-400 duration-300 disabled:opacity-50 cursor-not-allowed'>
+                <button ref={btnRef} type="submit" className='w-full bg-blue-600 rounded-lg py-2 text-white font-bold text-lg hover:bg-blue-400 duration-300 disabled:opacity-50 disabled:cursor-not-allowed'>
                     Pay now
                 </button>
             </div>

@@ -55,11 +55,11 @@ export const Login = () => {
         window.addEventListener('message', (e) => {
             if(e.origin === `${import.meta.env.VITE_BASE_URL}` && e.data && !redirect) {
                 redirect = true;
-                setToken(e.data);
+                setToken(e.data.token);
                 setLogged(true);
-                localStorage.setItem('token', e.data);
+                localStorage.setItem('token', e.data.token);
                 toast.success('Logged in successfully');
-                navigate('/');
+                return navigate('/');
             }
         });
     }

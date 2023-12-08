@@ -1,4 +1,4 @@
-import { orderService, productService, userService } from "../services/index.js";
+import { cartService, orderService, productService, userService } from "../services/index.js";
 import PaymentService from "../services/payment.repository.js";
 import response from "../helpers/response.js";
 import { uid } from 'uid';
@@ -10,8 +10,15 @@ export const createOrder = async (req, res, next) => {
     try {
         req.body.purchaser = req.uid;
         req.body.code = uid(10);
-        req.body.purchase_date = new Date();
+        req.body.purchase_date = new Date()
+
+        // Get cart before modifying it
+        const { cart: cid } = await userService.getUserById(req.uid);
+        const cart = await cartService.getCart(cid);
+
+        // Create order in database
         const result = await orderService.createOrder(req.body);
+        console.log(result);
         const status = result.status === 201 ? 'success' : 'fail';
         if (status === 'fail') throw new Error('Order failed');
 
@@ -24,12 +31,10 @@ export const createOrder = async (req, res, next) => {
         if (paymentIntent.status !== 'succeeded') throw new Error('Payment failed');
 
         // Send email
-        const { cid } = await userService.getUserById(req.uid);
-        const cart = await userService.getCart(cid);
-        const orderResume = cart.products.map(async (product) => {
-            const prod = await productService.getProduct(product.pid);
-            return `<li>${prod.title}  ||  ${prod.price} x ${product.units}  ||  ${prod.price * product.units * 1.21}</li>`;
-        }).join('');
+        const orderResume = await Promise.all(cart.products.map(async (p) => {
+            return `<li>${p.product.title}  ||  $${p.product.price} x ${p.units}  ||  $${p.product.price * p.units * 1.21}</li>`;
+        }));
+
         const mailService = new Mail();
         const emailData = {
             to: req.body.email,
@@ -37,12 +42,12 @@ export const createOrder = async (req, res, next) => {
             text: `Your order has been confirmed. Your order code is ${req.body.code}.`,
             html: `
                 <h1>Your order on <a href="https://boatpump.jcerme.com">BoatPump</a> has been confirmed.</h1>
-                <p>Your order code is <span style="color:#2563EB">${req.body.code}</span>.</p><br><br>
+                <p>Your order code is <span style="color:#2563EB">${req.body.code}</span>.</p>
                 <p>Order resume:</p>
                 <ul>
-                    ${orderResume}
-                </ul><br><br>
-                <p>Total: ${result.amount}</p>
+                    ${orderResume.join('')}
+                </ul>
+                <p>Total: $${result.order.amount}</p>
             `,
         };
         await mailService.sendMail(emailData);

@@ -5,7 +5,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import passport from 'passport';
 import compression from 'express-compression';
+import session from 'express-session';
 import path from 'path';
+
 // Utils
 import __dirname from '../utils.js';
 import initializePassport from './passport/passport.config.js';
@@ -21,6 +23,14 @@ app.disable('x-powered-by');
 app.use(compression(
     {brotli: { enabled:true, zlib: {}}} // Enable brotli compression
 ));
+
+// Session
+app.use(session({
+    secret: 'tu_secreto',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
 
 // CORS
 app.use(cors({
@@ -67,10 +77,10 @@ import { errors_handler } from './middlewares/errors_handler.js';
 app.use(errors_handler);
 
 // Load front-end index
-app.use('/', express.static('dist', { redirect: false }));
-app.get('*', (req, res, next) => {
-    return res.sendFile(path.resolve("dist/index.html"));
-});
+// app.use('/', express.static('dist', { redirect: false }));
+// app.get('*', (req, res, next) => {
+//     return res.sendFile(path.resolve("dist/index.html"));
+// });
 
 // WebSocket config
 import { Server } from 'socket.io';

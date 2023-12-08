@@ -72,16 +72,24 @@ router.get(
     '/githubcallback',
     passport.authenticate('github', { failureRedirect: '/error'}),
     async(req, res) => {
-        console.log(req.user)
-        req.session.user = req.user
-        return res.send(
-            `<script>
-                window.opener.postMessage(
-                    '${process.env.FRONTEND_URL}'
+        try {
+            const token = generateToken(req.user);
+            return res.send(
+                `<script>
+                    window.opener.postMessage(
+                        {
+                            type: 'auth-token',
+                            token: '${token}'
+                        },
+                        '${process.env.FRONTEND_URL}'
                     );
-                window.close();
-            </script>`
-        )
+                    window.close();
+                </script>`
+            );
+        } catch (error) {
+            req.logger.error(error);
+            next(error);
+        }
     }
 )
 
@@ -95,17 +103,25 @@ router.get(
     '/googlecallback',
     passport.authenticate( 'google', { failureRedirect: '/api/auth/error' }),
     async(req, res) => {
-        console.log(req.user)
-        req.session.user = req.user
-        return res.send(
-            `<script>
-                window.opener.postMessage(
-                    '${process.env.FRONTEND_URL}'
+        try {
+            const token = generateToken(req.user);
+            return res.send(
+                `<script>
+                    window.opener.postMessage(
+                        {
+                            type: 'auth-token',
+                            token: '${token}'
+                        },
+                        '${process.env.FRONTEND_URL}'
                     );
-                window.close();
-            </script>`
-        )
+                    window.close();
+                </script>`
+            );
+        } catch (error) {
+            req.logger.error(error);
+            next(error);
+        }
     }
-)
+);
 
 export default router;
