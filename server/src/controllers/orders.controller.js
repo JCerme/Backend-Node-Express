@@ -1,4 +1,4 @@
-import { cartService, orderService, productService, userService } from "../services/index.js";
+import { cartService, orderService, userService } from "../services/index.js";
 import PaymentService from "../services/payment.repository.js";
 import response from "../helpers/response.js";
 import { uid } from 'uid';
@@ -18,7 +18,6 @@ export const createOrder = async (req, res, next) => {
 
         // Create order in database
         const result = await orderService.createOrder(req.body);
-        console.log(result);
         const status = result.status === 201 ? 'success' : 'fail';
         if (status === 'fail') throw new Error('Order failed');
 
@@ -61,6 +60,16 @@ export const createOrder = async (req, res, next) => {
 export const getOrders = async (req, res, next) => {
     try {
         const result = await orderService.getOrders();
+        res.send(await response('success', result, req.query))
+    } catch (error) {
+        req.logger.error(error);
+        next(error);
+    }
+}
+
+export const getOrdersByUser = async (req, res, next) => {
+    try {
+        const result = await orderService.getOrdersByUser(req.uid);
         res.send(await response('success', result, req.query))
     } catch (error) {
         req.logger.error(error);

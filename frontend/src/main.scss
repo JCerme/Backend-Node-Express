@@ -56,3 +56,32 @@ body {
         transform: rotate(360deg);
     }
 }
+
+.bg-gold {
+    background:linear-gradient(to top right, #daaf5a, #e9cf79, #daaf5a, #e9cf79, #daaf5a);
+}
+
+.shine {
+    content: "";
+    position: absolute;
+    top: -60%;
+    right: 200%;
+    width: 50%;
+    height: 200%;
+    opacity: 0;
+    transform: rotate(135deg);
+    background: rgba(255, 255, 255, 0.13);
+    background: linear-gradient( to right, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.13) 77%, rgba(255, 255, 255, 0.5) 92%, rgba(255, 255, 255, 0.0) 100%);
+    animation: shine 4s infinite;
+}
+
+@keyframes shine {
+    50% {
+        opacity: 1;
+        right: -210%;
+    }
+    to {
+        opacity: 1;
+        right: -210%;
+    }
+}

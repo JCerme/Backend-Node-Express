@@ -26,24 +26,11 @@ export const Product = () => {
         .finally(() => setLoader(false))
     }, [])
 
-    // const socket = io();
-    // const cartId = document.querySelector('#cart_id').value;
-    // document.querySelector('#addToCart').addEventListener('click', (e) => {
-    //     socket.emit('addToCart', {
-    //         pid: e.target.dataset.id,
-    //         cid: cartId,
-    //     })
-    // })
-
-    // socket.on('productAddedToCart', () => {
-    //     createToast("success", "Product added successfully to cart");
-    // })
-
     return (
         <>
         {loader && <Loader/>}
         {!loader && (
-            <div className="max-w-[1024px] mx-auto grid grid-cols-2 gap-12 pt-12">
+            <div className="max-w-[1024px] mx-auto grid grid-cols-2 gap-12 py-12 mb-12">
                 <div className="image-sect relative">
                     <Image product={product} />
                     <Cards />

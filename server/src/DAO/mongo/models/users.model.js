@@ -19,6 +19,13 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'carts',
     },
+    avatar: String,
+    premium: Boolean,
+    documents: [],
+    last_connection: {
+        type: Date,
+        default: new Date(),
+    },
 });
 
 mongoose.set('strictQuery', false);

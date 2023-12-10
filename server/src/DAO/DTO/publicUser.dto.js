@@ -5,6 +5,10 @@ export default class PublicUserDTO {
         this.last_name = user?.last_name ?? '';
         this.email = this.hideEmail(user?.email) ?? '';
         this.role = user?.role ?? 'user';
+        this.avatar = user?.avatar ?? '';
+        this.premium = user?.premium ?? false;
+        this.documents = user?.documents ?? [];
+        this.last_connection = user?.last_connection ?? new Date();
     }
 
     get() {
@@ -13,7 +17,11 @@ export default class PublicUserDTO {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,
-            role: this.role
+            role: this.role,
+            avatar: this.avatar,
+            premium: this.premium,
+            documents: this.documents,
+            last_connection: this.last_connection,
         }
     }
 

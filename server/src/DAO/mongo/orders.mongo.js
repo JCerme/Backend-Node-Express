@@ -104,4 +104,20 @@ export default class Order {
     }
 
     getOrders = async () => await orderModel.find();
+
+    getOrdersByUser = async (uid) => {
+        try {
+            const user = await usersModel.findById(uid);
+            if (!user) return { status: 404, message: 'User not found' };
+            const orders = await orderModel.find({ purchaser: uid });
+            return { status: 200, message: 'Orders found', orders };
+        } catch (error) {
+            CustomError.createError(
+                ERR_DICT.ORDER,
+                'Error getting orders',
+                error,
+                'User tried to get orders, but an error occurred'
+            );
+        }
+    }
 }

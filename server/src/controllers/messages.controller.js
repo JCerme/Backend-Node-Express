@@ -51,7 +51,6 @@ export const addMessage = async (context, data, socket = null) => {
             socket.emit('success', 'Message added successfully');
         }
     } catch (error) {
-        console.log(error);
         logger.error(error);
         if (context?.res) {
             context?.res?.status(500).send(await response('error', 'Server error', context?.query));

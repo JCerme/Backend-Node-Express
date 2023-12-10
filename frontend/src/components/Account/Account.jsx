@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { UserCard } from './UserCard';
 import { Orders } from './Orders';
-import { Files } from './Files';
+import { Files } from './Files/Files';
 import { LoginContext } from '../../contexts/LoginContext';
 
 export const Account = () => {
@@ -19,12 +19,12 @@ export const Account = () => {
     }, [token])
 
     return (
-        <div className="max-w-[1024px] py-4 mx-auto mt-16 mb-24 grid grid-cols-3 gap-20">
+        <div className="max-w-[1024px] py-4 mx-auto mt-16 mb-24 items-start grid grid-cols-3 gap-20">
             <UserCard user={user} />
             <div className='col-span-2 flex flex-col gap-8'>
-                <Orders user={user} />
+                <Files user={user} setUser={setUser}/>
                 <hr/>
-                <Files user={user}/>
+                <Orders user={user} />
             </div>
         </div>
     )

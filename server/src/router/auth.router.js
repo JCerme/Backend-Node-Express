@@ -26,6 +26,7 @@ router.post('/login', async (req, res, next) => {
 
         // JWT Token
         const token = generateToken(user);
+        await userService.updateUser(user._id, { last_connection: new Date() });
         res.status(201).json({ token, logged: true });
     } catch (error) {
         req.logger.error(error);

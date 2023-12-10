@@ -36,6 +36,7 @@ const initializePassport = () => {
             }
 
             user.token = generateToken(user)
+            await userService.updateUser(user._id, { last_connection: new Date() });
             return done(null, user)
         } catch(error) {
             logger.error(error);
@@ -63,6 +64,7 @@ const initializePassport = () => {
                 user = await userService.addUser(newUser)
             }
             user.token = generateToken(user)
+            await userService.updateUser(user._id, { last_connection: new Date() });
             return done(null, user)
         } catch(error) {
             logger.error(error);

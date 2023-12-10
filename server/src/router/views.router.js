@@ -6,6 +6,7 @@ import { getCart, getCartByID } from "../controllers/carts.controller.js";
 import { getMessages } from "../controllers/messages.controller.js";
 import PublicUserDTO from '../DAO/DTO/publicUser.dto.js';
 import { userService } from '../services/index.js';
+import { getOrdersByUser } from '../controllers/orders.controller.js';
 
 // MAIN ROUTER
 router.get('/', getProducts);
@@ -36,6 +37,9 @@ router.get('/mockingproducts', (req, res) => {
 // Carts
 router.get('/cart', authentication, getCart);
 router.get('/cart/:cid', getCartByID);
+
+// Orders
+router.get('/orders', authentication, getOrdersByUser);
 
 // Logout
 router.get("/logout", (req, res) => {

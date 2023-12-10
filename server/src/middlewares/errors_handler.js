@@ -2,7 +2,6 @@ import ERR_DICT from "../services/errors/enums.js"
 
 export const errors_handler = (error, req, res, next) => {
     const errorExists = Object.values(ERR_DICT).includes(error.code);
-    console.log(error)
 
     req.logger.error(error);
     if(errorExists) {

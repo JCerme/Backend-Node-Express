@@ -62,6 +62,8 @@ import orderRoute from './router/order.router.js';
 import loggerRouter from './router/logger.router.js';
 import resetPwdRouter from './router/reset_pwd.router.js';
 import stripeRouter from './router/stripe.router.js';
+import filesRouter from './router/files.router.js';
+import usersRouter from './router/users.router.js';
 app.use('/api', viewsRouter);
 app.use('/api/products', prodRouter);
 app.use('/api/cart', cartsRouter);
@@ -71,16 +73,18 @@ app.use('/api/checkout', orderRoute);
 app.use('/api/logger', loggerRouter);
 app.use('/api', resetPwdRouter);
 app.use('/api/stripe', stripeRouter);
+app.use('/api/files', filesRouter);
+app.use('/api/users', usersRouter);
 
 // Errors handler
 import { errors_handler } from './middlewares/errors_handler.js';
 app.use(errors_handler);
 
 // Load front-end index
-// app.use('/', express.static('dist', { redirect: false }));
-// app.get('*', (req, res, next) => {
-//     return res.sendFile(path.resolve("dist/index.html"));
-// });
+app.use('/', express.static('dist', { redirect: false }));
+app.get('*', (req, res, next) => {
+    return res.sendFile(path.resolve("dist/index.html"));
+});
 
 // WebSocket config
 import { Server } from 'socket.io';
