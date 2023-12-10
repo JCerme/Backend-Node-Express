@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContext';
+import { toast } from 'react-toastify';
 
 export const Register = () => {
     const navigate = useNavigate();

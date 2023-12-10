@@ -4,7 +4,6 @@ import { Form } from './Form'
 import { SuccessModal } from './SuccessModal'
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { toast } from 'react-toastify';
 import PaymentService from '../../services/PaymentService'
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PKEY);
 

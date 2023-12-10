@@ -6,7 +6,6 @@ import { Summary } from './Summary'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { LoginContext } from '../../contexts/LoginContext';
-// import { Offers } from './Offers';
 
 export const Form = ({ paymentIntentId }) => {
     const { token } = useContext(LoginContext);
@@ -62,7 +61,10 @@ export const Form = ({ paymentIntentId }) => {
         });
 
         setErrors(newErrors);
-        if(Object.values(newErrors).some(value => value !== false)) return;
+        if(Object.values(newErrors).some(value => value !== false)) {
+            btnRef.current.disabled = false;
+            return;
+        }
 
         if (!stripe || !elements) {
             toast.error('Stripe is not loaded');
@@ -152,7 +154,6 @@ export const Form = ({ paymentIntentId }) => {
             </div>
             <div className='sticky top-24 col-span-2 flex flex-col gap-6'>
                 <Summary btnRef={btnRef} CardElement={CardElement} policyRef={policyRef} errors={errors}/>
-                {/* <Offers/> */}
             </div>
         </form>
     )
