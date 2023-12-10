@@ -33,7 +33,7 @@ export const UploadDoc = ({user, setUser, type, children, text}) => {
                 setAlreadyUploaded(true);
                 toast.success('File uploaded successfully');
             } else {
-                toast.error(`Filename doesn't contain "${type}"`);
+                toast.error(`Filename should be named as "${type}.pdf"`);
             }
         } else {
             toast.error('Error uploading file');
