@@ -92,13 +92,24 @@ import { createServer } from 'node:http';
 import { addMessage } from './controllers/messages.controller.js';
 
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: [
+            'http://localhost:8080',
+            'http://localhost:5173',
+            'https://boatpump.jcerme.com',
+        ],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization']
+    }
+});
 
 io.on('connection', (socket) => {
     // Listen to new messages
     socket.on('message', msg => {
         msg.createdAt = new Date();
-        // Pasando el socket como tercer argumento
+        // Passing the socket as the third argument
         addMessage(socket.handshake.session, msg, socket);
         io.emit('message', msg);
     });
