@@ -23,19 +23,11 @@ export const getMessageById = async (req, res, next) => {
     }
 }
 
-export const addMessage = async (context, data, socket = null) => {
+export const addMessage = async (msg, socket = null) => {
     try {
-        const msg = context?.body || data;
-
         if (!msg.uid || !msg.name || !msg.message) {
             const errorMessage = 'Missing required fields';
-            if (context?.res) {
-                return context?.res?.send(
-                    await response('error', errorMessage, context?.query)
-                );
-            } else if (socket) {
-                return socket.emit('error', errorMessage);
-            }
+            if (socket) return socket.emit('error', errorMessage);
         }
 
         const message = {
@@ -45,18 +37,10 @@ export const addMessage = async (context, data, socket = null) => {
         };
 
         const result = await messageService.addMessage(message);
-        if (context?.res) {
-            context?.res.send(await response('success', result, context?.query));
-        } else if (socket) {
-            socket.emit('success', 'Message added successfully');
-        }
+        if (socket) socket.emit('success', 'Message added successfully');
     } catch (error) {
         logger.error(error);
-        if (context?.res) {
-            context?.res?.status(500).send(await response('error', 'Server error', context?.query));
-        } else if (socket) {
-            socket.emit('error', 'Server error');
-        }
+        if (socket) socket.emit('error', 'Server error');
     }
 }
 

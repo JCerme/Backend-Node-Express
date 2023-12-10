@@ -110,7 +110,7 @@ io.on('connection', (socket) => {
     socket.on('message', msg => {
         msg.createdAt = new Date();
         // Passing the socket as the third argument
-        addMessage(socket.handshake.session, msg, socket);
+        addMessage(msg, socket);
         io.emit('message', msg);
     });
 });
