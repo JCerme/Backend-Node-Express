@@ -1,11 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { LoginContext } from '../../contexts/LoginContext'
-import io from 'socket.io-client'
+import { socket } from '../../App';
 
 export const Chat = () => {
     const [ messages, setMessages ] = useState([])
     const { token, user } = useContext(LoginContext)
-    const socket = io(import.meta.env.VITE_BASE_URL)
     const messageRef = useRef(null);
 
     useEffect(() => {
