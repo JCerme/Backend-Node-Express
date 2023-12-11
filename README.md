@@ -8,6 +8,39 @@ This project is a sophisticated online store developed using Node.js, Express, R
 
 Node.js, Express, React, Tailwind, MongoDB, Passport for OAuth, Cookies, WebSockets, Mocha for testing, Nginx, SSL, PM2, Docker
 
+## 👨🏻‍💻 Installation
+1. Clone the repository
+2. Go to 'frontend' folder and install dependencies
+3. Make the .env.production file
+4. Run build
+```bash
+  cd ./frontend
+  npm install
+  nano .env.production
+  npm run build
+```
+
+5. Go to 'server' folder and install dependencies
+6. Make the .env file
+7. Copy the dist frontend folder to 'server'
+8. Make files folder
+9. Start the server
+```bash
+  mv ./dist ../server/
+  cd ..
+  cd ./server
+  npm install
+  nano .env
+  cd ./dist
+  mkdir files
+  cd files
+  mkdir avatars
+  mkdir documents
+  mkdir products
+  cd ..
+  npm start
+```
+
 ## 📱 Features
 
 ### Backend (API)
