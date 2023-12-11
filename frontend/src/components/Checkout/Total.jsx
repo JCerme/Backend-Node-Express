@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const Total = ({cart}) => {
+    const { user } = useContext(LoginContext);
     const getSubtotal = () => {
         let subtotal = 0;
         cart?.products?.forEach(p => {
@@ -14,7 +16,8 @@ export const Total = ({cart}) => {
     }
 
     const getTotal = () => {
-        return (getSubtotal() + parseFloat(calcIVA())).toFixed(2);
+        const discount = user?.premium ? 0.9 : 1;
+        return ((getSubtotal() + parseFloat(calcIVA())) * discount).toFixed(2);
     }
 
     return (
@@ -25,7 +28,11 @@ export const Total = ({cart}) => {
         </div>
         <div className="flex justify-between text-xl pt-2">
             <span className=''>Total</span>
-            <span>${getTotal()}</span>
+            {
+            user?.premium
+            ? <span className='text-green-600'>${getTotal()}</span>
+            : <span>${getTotal()}</span>
+            }
         </div>
     </div>
     )

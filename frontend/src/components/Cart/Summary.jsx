@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Loader } from '../Loader';
 import { Link } from 'react-router-dom';
+import { LoginContext } from '../../contexts/LoginContext';
 
 export const Summary = ({ cart, summaryLoader }) => {
+    const { user } = useContext(LoginContext);
     const getSubtotal = () => {
         let subtotal = 0;
         cart?.products?.forEach(p => {
@@ -16,7 +18,8 @@ export const Summary = ({ cart, summaryLoader }) => {
     }
 
     const getTotal = () => {
-        return (getSubtotal() + parseFloat(calcIVA())).toFixed(2);
+        const discount = user?.premium ? 0.9 : 1;
+        return ((getSubtotal() + parseFloat(calcIVA())) * discount).toFixed(2);
     }
 
     return (
@@ -39,6 +42,12 @@ export const Summary = ({ cart, summaryLoader }) => {
                     <span className='text-gray-400'>Tax</span>
                     <span className='text-gray-400'>${calcIVA()}</span>
                 </div>
+                {
+                user?.premium && (<div className="flex justify-between">
+                    <span className='text-green-600'>Premium</span>
+                    <span className='text-green-600'>-10%</span>
+                </div>
+                )}
                 <div className="flex justify-between text-xl">
                     <span>Total</span>
                     <span>${getTotal()}</span>
