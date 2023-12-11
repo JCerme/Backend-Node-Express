@@ -9,7 +9,7 @@ export const Files = ({ user, setUser }) => {
 
     useEffect(() => {
         setHaveAllDocs(
-            user?.documents?.length === 3 
+            user?.documents?.length >= 3
             && user?.documents?.find(doc => doc.includes('id_certificate'))
             && user?.documents?.find(doc => doc.includes('home_address'))
             && user?.documents?.find(doc => doc.includes('account_status'))
